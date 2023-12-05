@@ -11,21 +11,68 @@
             <h1>Hunt the Wumpus</h1>
         </header>
         <main class="game-container">
+
             <div class="intro-screen">
-                <div class="pop-up">
-                    <h2>Hunt the Wumpus</h2>
+                <section class="introduction pop-up">
+                    <h2>Introduction</h2>
                     <p class="tagline">It's either hunt or be hunted.</p>
                     <p>Your bunker has been breached. Your colony was already small. Now it's... tiny. <br> And <em>you</em> are the only one with some fight left in you.</p>
                     <p>With only three arrows left and a faulty pair of infrared goggles, <br>will you take the fate of the colony in your hands?</p>
-                    <button>ENTER</button>
-                </div>
+                    <button class="view-instructions-btn">instructions</button>
+                    <button class="new-game-btn">ENTER</button>
+                </section>
             </div>
+
+            <div class="instructions-screen">
+                <section class="instructions pop-up">
+                    <h2>Instructions</h2>
+                    <p>this is a set of instructions...</p>
+                    <button class="back-btn">back</button>
+                </section>
+            </div>
+
             <div class="game-screen">
+                <section class="view-finder">
+
+                </section>
+                <section class="map">
+
+                </section>
+                <section class="controls">
+
+                </section>
+                <section class="message-board">
+
+                </section>
             </div>
+
             <div class="event-screen">
+                <div class="static">
+                </div>
+                <section class="message-board">
+
+                </section>
             </div>
-            <div class="game-over-screen">
+
+            <div class="game-end-screen">
+                <section class="outcome-display">
+                    <div class="defeat-view">
+                        <h2 class="defeat-heading">Game Over</h2>
+                        <p class="outcome-message">So much for bravery.</p>
+                        <button class="try-again-btn">TRY AGAIN</button>
+                        <button class="new-game-btn">NEW GAME</button>
+                        <button class="quit-btn">QUIT</button>
+                    </div>
+                    <div class="victory-view">
+                        <h2 class="victory-heading">You Did It</h2>
+                        <p>You killed the Wumpus. Your colony is safe again.</p>
+                        <p>...for now...</p>
+                        <button class="new-game-btn">NEW GAME</button>
+                        <button class="quit-btn">QUIT</button>
+                    </div>
+                </section>
             </div>
+
         </main>
         <footer>
             <span>&copy; Helen Burger 2023</span>
