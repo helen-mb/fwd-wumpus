@@ -32,25 +32,54 @@
             </div>
 
             <div class="game-screen">
-                <section class="view-finder">
-
-                </section>
-                <section class="map">
-
-                </section>
-                <section class="controls">
-
-                </section>
-                <section class="message-board">
-
-                </section>
+                <div class="grid-container game-board">
+                    <section class="view-finder">
+                        <div class="image-container">
+                            <p class="current-room-display">This is room 0</p>
+                            <p class="clue-display">this is a clue</p>
+                            <img src="" alt="view-finder-view" class="contained-image">
+                        </div>
+                    </section>
+                    <section class="map">
+                        <img src="" alt="map" class="map">
+                    </section>
+                    <section class="controls">
+                        <div class="direction-controls">
+                            <button class="direction-0-btn">room 1</button>
+                            <button class="direction-1-btn">room 2</button>
+                            <button class="direction-2-btn">room 3</button>
+                        </div>
+                        <div class="arrow-controls">
+                            <div class="arrow-supply-display">
+                                <div class="arrow-unit"><img src="" alt="arrow"></div>
+                                <div class="arrow-unit"><img src="" alt="arrow"></div>
+                                <div class="arrow-unit"><img src="" alt="arrow"></div>
+                            </div>
+                            <button class="prepare-arrow">prepare arrow</button>
+                            <button class="shoot-arrow">shoot arrow</button>
+                            <div class="arrow-power-display">
+                                <div class="power-5">_</div>
+                                <div class="power-4">_</div>
+                                <div class="power-3">_</div>
+                                <div class="power-2">_</div>
+                                <div class="power-1">_</div>
+                            </div>
+                            <button class="increase-arrow-power">+</button>
+                            <button class="decrease-arrow-power">-</button>
+                        </div>
+                    </section>
+                    <section class="message-board">
+                        <p class="game-message">This is the message board</p>
+                    </section>
+                </div>
             </div>
 
             <div class="event-screen">
                 <div class="static">
+                    <img src="" alt="static">
                 </div>
                 <section class="message-board">
-
+                    <p class="game-message">this is an event message</p>
                 </section>
             </div>
 
