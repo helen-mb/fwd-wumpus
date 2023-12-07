@@ -66,3 +66,12 @@ button {
     color: greenyellow;
 
 }
+
+/* Hide Screens */
+
+.instructions-screen,
+.game-board-screen,
+.event-screen,
+.game-end-screen {
+    display: none;
+}
