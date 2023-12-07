@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/styles.css">
     <title>Hunt the Wumpus | by Helen Burger</title>
 </head>
 <body>
@@ -16,7 +17,7 @@
                 <section class="introduction pop-up">
                     <h2>Introduction</h2>
                     <p class="tagline">It's either hunt or be hunted.</p>
-                    <p>Your bunker has been breached. Your colony was already small. Now it's... tiny. <br> And <em>you</em> are the only one with some fight left in you.</p>
+                    <p>Your bunker has been breached. Your colony was already small. Now it's... tiny. <br>There's only one way out, and <em>you</em> are the only one with some fight left in you.</p>
                     <p>With only three arrows left and a faulty pair of infrared goggles, <br>will you take the fate of the colony in your hands?</p>
                     <button class="view-instructions-btn">instructions</button>
                     <button class="new-game-btn">ENTER</button>
@@ -37,13 +38,13 @@
                         <div class="image-container">
                             <p class="current-room-display">This is room 0</p>
                             <p class="clue-display">this is a clue</p>
-                            <img src="" alt="view-finder-view" class="contained-image">
+                            <img src="images/placeholder-viewfinder.png" alt="view-finder-view" class="contained-image" width="800px">
                         </div>
                     </section>
-                    <section class="map">
-                        <img src="" alt="map" class="map">
+                    <section class="map-container">
+                        <img src="images/placeholder-map.png" alt="map" class="map" width="300px">
                     </section>
-                    <section class="controls">
+                    <section class="controls-container flex-container">
                         <div class="direction-controls">
                             <button class="direction-0-btn">room 1</button>
                             <button class="direction-1-btn">room 2</button>
@@ -51,19 +52,19 @@
                         </div>
                         <div class="arrow-controls">
                             <div class="arrow-supply-display">
-                                <div class="arrow-unit"><img src="" alt="arrow"></div>
-                                <div class="arrow-unit"><img src="" alt="arrow"></div>
-                                <div class="arrow-unit"><img src="" alt="arrow"></div>
+                                <div class="arrow-unit"><img src="images/placeholder-arrow.png" alt="arrow" width="20px"></div>
+                                <div class="arrow-unit"><img src="images/placeholder-arrow.png" alt="arrow" width="20px"></div>
+                                <div class="arrow-unit"><img src="images/placeholder-arrow.png" alt="arrow" width="20px"></div>
                             </div>
                             <button class="prepare-arrow">prepare arrow</button>
                             <button class="shoot-arrow">shoot arrow</button>
-                            <div class="arrow-power-display">
+                            <!-- <div class="arrow-power-display">
                                 <div class="power-5">_</div>
                                 <div class="power-4">_</div>
                                 <div class="power-3">_</div>
                                 <div class="power-2">_</div>
                                 <div class="power-1">_</div>
-                            </div>
+                            </div> -->
                             <button class="increase-arrow-power">+</button>
                             <button class="decrease-arrow-power">-</button>
                         </div>
