@@ -69,7 +69,7 @@ class Map {
     //Map Properties
     constructor () {
         this.rooms = new Array(20);
-        this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
+        // this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
         // this.pits = new Array(2);
         // this.bats = new Array(2);
     }
@@ -101,19 +101,19 @@ class Room {
 
 //Class ??? of ???: Wumpus Class
 class Wumpus {
-    //Wumpus Properties
-    constructor (locationID) {
-        this.startLocation = locationID;
-        this.currentLocation = locationID;
-        this.previousLocation = undefined;
-    }
-    //END of 'Wumpus Properties'
+    // //Wumpus Properties
+    // constructor (locationID) {
+    //     this.startLocation = locationID;
+    //     this.currentLocation = locationID;
+    //     this.previousLocation = undefined;
+    // }
+    // //END of 'Wumpus Properties'
 
-    //Wumpus Methods
-    relocateWumpus() {
-        this.previousLocation = this.currentLocation;
-        this.currentLocation = map.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
-    }
+    // //Wumpus Methods
+    // relocateWumpus() {
+    //     this.previousLocation = this.currentLocation;
+    //     this.currentLocation = map.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
+    // }
     //END of 'Wumpus Methods'
 }
 
@@ -142,11 +142,19 @@ class Pit {
 //Class ??? of ???: Player Class
 class Player {
     //Player Properties
-
+    constructor (locationID) {
+        this.startLocation = locationID;
+        this.currentLocation = locationID;
+        this.previousLocation = undefined;
+        //this.arrowSupply = 5;
+    }
     //END of 'Player Properties'
 
     //Player Methods
-
+    movePlayer(selectedLocationID) {
+        this.previousLocation = this.currentLocation;
+        this.currentLocation = selectedLocationID;
+    }
     //END of 'Player Methods'
 }
 
