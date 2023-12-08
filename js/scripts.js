@@ -11,11 +11,11 @@ const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
 const $currentLocationDisplay = $('.current-location-display-value')[0];
 //Interactive Components
-const $viewInstructionsBtn = $('.view-instructions-btn');
+const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
 const $exitInstructionsBtn = $('.hide-instructions-btn');
 const $quitBtn = $('.quit-btn');
-const $directionBtn = $('.direction-btn');
+const $directionBtns = $('.direction-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
@@ -182,7 +182,7 @@ class Arrow {
 
 // --------------------------------------------------------------------------------
 //Add Event Listeners--------------------------------------------------------------
-$viewInstructionsBtn.on('click', function() {
+$viewInstructionsBtns.on('click', function() {
     $instructionsScreen.show();
 })
 $exitInstructionsBtn.on('click', function() {
@@ -201,7 +201,7 @@ $quitBtn.on('click', function() {
     $headerNavigation.hide();
     $introductionScreen.show();
 })
-$directionBtn.on('click', function() {
+$directionBtns.on('click', function() {
     game.player.movePlayer(this.value);
     $currentLocationDisplay.innerText = game.player.currentLocation;
     console.log(game.player);
