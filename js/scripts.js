@@ -12,7 +12,8 @@ const $gameEndScreen = $('.game-end-screen');
 const $viewInstructionsBtn = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
 const $exitInstructionsBtn = $('.hide-instructions-btn');
-const $quitBtn = $('.quit-btn')
+const $quitBtn = $('.quit-btn');
+const $directionBtn = $('.direction-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
@@ -190,6 +191,10 @@ $quitBtn.on('click', function() {
     $gameBoardScreen.hide();
     $headerNavigation.hide();
     $introductionScreen.show();
+})
+$directionBtn.on('click', function() {
+    player.movePlayer(this.value);
+    console.log(player);
 })
 //END of "Add Event Listeners"
 
