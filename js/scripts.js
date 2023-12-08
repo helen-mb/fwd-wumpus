@@ -78,7 +78,11 @@ class Map {
 //Class ??? of ???: Room Class
 class Room {
     //Room Properties
-
+    constructor (index, hazard) {
+        this.roomID = index + 1;
+        this.neighbors = roomConnectionsArray[index];
+        this.hazard = hazard;
+    }
     //END of 'Room Properties'
 
     //Room Methods
