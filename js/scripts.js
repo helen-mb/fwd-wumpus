@@ -93,11 +93,18 @@ class Room {
 //Class ??? of ???: Wumpus Class
 class Wumpus {
     //Wumpus Properties
-
+    constructor (locationID) {
+        this.startLocation = locationID;
+        this.currentLocation = locationID;
+        this.previousLocation = undefined;
+    }
     //END of 'Wumpus Properties'
 
     //Wumpus Methods
-
+    relocateWumpus() {
+        this.previousLocation = this.currentLocation;
+        //this.currentLocation = map.room[this.currentLocation].neighbor;
+    }
     //END of 'Wumpus Methods'
 }
 
