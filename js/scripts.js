@@ -39,7 +39,7 @@ const roomConnectionsArray = [
     [19, 17, 10],
     [15, 18, 12]
 ]
-
+let game;
 
 // --------------------------------------------------------------------------------
 //Collect Classes------------------------------------------------------------------
@@ -57,11 +57,16 @@ class Interface {
 //Class ??? of ???: Game Class
 class Game {
     //Game Properties
-
+    constructor () {
+        this.player = new Player(0);
+        this.map = new Map();
+    }
     //END of 'Game Properties'
 
     //Game Methods
-
+    startGame() {
+        this.map.populateMap();
+    }
     //END of 'Game Methods'
 }
 
@@ -185,6 +190,8 @@ $enterBtn.on('click', function() {
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
+    game = new Game();
+    game.startGame();
 })
 $quitBtn.on('click', function() {
     //TODO: END GAME ()
@@ -193,8 +200,8 @@ $quitBtn.on('click', function() {
     $introductionScreen.show();
 })
 $directionBtn.on('click', function() {
-    player.movePlayer(this.value);
-    console.log(player);
+    game.player.movePlayer(this.value);
+    console.log(game.player);
 })
 //END of "Add Event Listeners"
 
