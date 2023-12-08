@@ -8,6 +8,8 @@ const $instructionsScreen = $('.instructions-screen');
 const $gameBoardScreen = $('.game-board-screen');
 const $eventScreen = $('.event-screen');
 const $gameEndScreen = $('.game-end-screen');
+//Visual Elements
+const $currentLocationDisplay = $('.current-location-display-value')[0];
 //Interactive Components
 const $viewInstructionsBtn = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -201,6 +203,7 @@ $quitBtn.on('click', function() {
 })
 $directionBtn.on('click', function() {
     game.player.movePlayer(this.value);
+    $currentLocationDisplay.innerText = game.player.currentLocation;
     console.log(game.player);
 })
 //END of "Add Event Listeners"
