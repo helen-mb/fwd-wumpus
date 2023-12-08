@@ -67,11 +67,20 @@ class Game {
 //Class ??? of ???: Map Class
 class Map {
     //Map Properties
-
+    constructor () {
+        this.rooms = new Array(20);
+        this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
+        // this.pits = new Array(2);
+        // this.bats = new Array(2);
+    }
     //END of 'Map Properties'
 
     //Map Methods
-
+    populateMap() {
+        for (let i = 0; i < roomConnectionsArray.length; i++) {
+            this.rooms[i] = new Room (i, undefined);
+        }
+    } 
     //END of 'Map Methods'
 }
 
@@ -103,7 +112,7 @@ class Wumpus {
     //Wumpus Methods
     relocateWumpus() {
         this.previousLocation = this.currentLocation;
-        //this.currentLocation = map.room[this.currentLocation].neighbor;
+        this.currentLocation = map.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
     }
     //END of 'Wumpus Methods'
 }
