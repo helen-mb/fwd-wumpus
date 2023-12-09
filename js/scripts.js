@@ -36,6 +36,7 @@ gameInterface = {
         $currentLocationIDDisplay.innerText = game.player.currentLocation;
         //Updates the direction controls' values and displays to reflect
         //the new neighbors of the player's current location:
+        //TODO: fix room id's to match map
         for (let i = 0; i < $directionBtns.length; i++) {
             $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
@@ -62,7 +63,7 @@ class Game {
     constructor () {
         this.player = new Player('0');
         this.gameMap = new GameMap();
-        this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
+        this.wumpus = new Wumpus(Math.floor(Math.random() * 19)+1);
     }
     //END of 'Game Properties'
 
@@ -227,11 +228,12 @@ $exitInstructionsBtn.on('click', function() {
     $instructionsScreen.hide();
 })
 $enterBtn.on('click', function() {
+    game = new Game();
+    game.startGame();
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
-    game = new Game();
-    game.startGame();
+    game.getNearbyHazards();
 })
 $quitBtn.on('click', function() {
     //TODO: END GAME ()
