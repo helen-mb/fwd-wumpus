@@ -9,7 +9,7 @@ const $gameBoardScreen = $('.game-board-screen');
 const $eventScreen = $('.event-screen');
 const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
-const $currentLocationDisplay = $('.current-location-display-value')[0];
+const $currentLocationIDDisplay = $('.current-location-id-display')[0];
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -51,7 +51,11 @@ gameInterface = {
 
     //gameInterface Methods
     printNewLocationInformation() {
-        $currentLocationDisplay.innerText = game.player.currentLocation;
+        $currentLocationIDDisplay.innerText = game.player.currentLocation;
+        for (let i = 0; i < $directionBtns.length; i++) {
+            $directionBtns[i].value = game.map.rooms[game.player.currentLocation].neighbors[i];
+            $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
+        }
     }
     //END of 'gameInterface Methods'
 }
