@@ -43,20 +43,20 @@ const $directionBtns = $('.direction-btn');
 // ]
 let game;
 
+//Object ??? of ???: gameInterface Class
+gameInterface = {
+    //gameInterface Properties
+
+    //END of 'gameInterface Properties'
+
+    //gameInterface Methods
+    printNewLocationInformation() {
+        $currentLocationDisplay.innerText = game.player.currentLocation;
+    }
+    //END of 'gameInterface Methods'
+}
 // --------------------------------------------------------------------------------
 //Collect Classes------------------------------------------------------------------
-//Class ??? of ???: Interface Class
-class Interface {
-    //Interface Properties
-
-    //END of 'Interface Properties'
-
-    //Interface Methods
-    printNewLocationInformation() {
-        
-    }
-    //END of 'Interface Methods'
-}
 
 //Class ??? of ???: Game Class
 class Game {
@@ -225,8 +225,7 @@ $quitBtn.on('click', function() {
 })
 $directionBtns.on('click', function() {
     game.player.movePlayer(this.value);
-    $currentLocationDisplay.innerText = game.player.currentLocation;
-    console.log(game.player);
+    gameInterface.printNewLocationInformation();
 })
 //END of "Add Event Listeners"
 
