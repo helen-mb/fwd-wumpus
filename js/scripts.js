@@ -36,7 +36,7 @@ gameInterface = {
         //Updates the direction controls' values and displays to reflect
         //the new neighbors of the player's current location:
         for (let i = 0; i < $directionBtns.length; i++) {
-            $directionBtns[i].value = game.map.rooms[game.player.currentLocation].neighbors[i];
+            $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
         }
     }
@@ -50,20 +50,21 @@ class Game {
     //Game Properties
     constructor () {
         this.player = new Player('0');
-        this.map = new Map();
+        this.gameMap = new GameMap();
+        this.wumpus = new Wumpus();
     }
     //END of 'Game Properties'
 
     //Game Methods
     startGame() {
-        this.map.populateMap();
+        this.gameMap.populateGameMap();
     }
     //END of 'Game Methods'
 }
 
-//Class ??? of ???: Map Class
-class Map {
-    //Map Properties
+//Class ??? of ???: GameMap Class
+class GameMap {
+    //GameMap Properties
     constructor () {
         // this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
         // this.pits = new Array(2);
@@ -90,17 +91,17 @@ class Map {
         [18, 16, 8],
         [19, 17, 10],
         [15, 18, 12]]
-    //END of 'Map Properties'
+    //END of 'GameMap Properties'
 
-    //Map Methods
-    //Modifies game.map.rooms to contain an array of new Room objects;
+    //GameMap Methods
+    //Modifies game.gameMap.rooms to contain an array of new Room objects;
     //Called by game.startGame():
-    populateMap() {
-        for (let i = 0; i < game.map.rooms.length; i++) {
+    populateGameMap() {
+        for (let i = 0; i < game.gameMap.rooms.length; i++) {
             this.rooms[i] = new Room (i, undefined);
         }
     } 
-    //END of 'Map Methods'
+    //END of 'GameMap Methods'
 }
 
 //Class ??? of ???: Room Class
@@ -108,7 +109,7 @@ class Room {
     //Room Properties
     constructor (index, hazard) {
         this.roomID = index;
-        this.neighbors = game.map.rooms[index];
+        this.neighbors = game.gameMap.rooms[index];
         this.hazard = hazard;
     }
     //END of 'Room Properties'
@@ -131,7 +132,7 @@ class Wumpus {
     // //Wumpus Methods
     // relocateWumpus() {
     //     this.previousLocation = this.currentLocation;
-    //     this.currentLocation = map.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
+    //     this.currentLocation = gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
     // }
     //END of 'Wumpus Methods'
 }
