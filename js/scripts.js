@@ -19,39 +19,22 @@ const $directionBtns = $('.direction-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
-// const roomConnectionsArray = [
-//     [1, 7, 4],
-//     [2, 9, 0],
-//     [3, 11, 1],
-//     [4, 13, 2],
-//     [0, 5, 3],
-//     [6, 14, 4],
-//     [7, 16, 5],
-//     [8, 6, 0],
-//     [9, 17, 7],
-//     [10, 8, 1],
-//     [11, 18, 9],
-//     [12, 10, 2],
-//     [13, 19, 11],
-//     [14, 12, 3],
-//     [5, 15, 13],
-//     [16, 19, 14],
-//     [17, 15, 6],
-//     [18, 16, 8],
-//     [19, 17, 10],
-//     [15, 18, 12]
-// ]
 let game;
 
-//Object ??? of ???: gameInterface Class
+//Object ??? of ???: gameInterface Object
+//An object to handle the user interface changes:
 gameInterface = {
     //gameInterface Properties
 
     //END of 'gameInterface Properties'
 
     //gameInterface Methods
+    //Called by $directionBtns' click listener:
     printNewLocationInformation() {
+        //Updates the printed display of the player's current location:
         $currentLocationIDDisplay.innerText = game.player.currentLocation;
+        //Updates the direction controls' values and displays to reflect
+        //the new neighbors of the player's current location:
         for (let i = 0; i < $directionBtns.length; i++) {
             $directionBtns[i].value = game.map.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
@@ -110,6 +93,8 @@ class Map {
     //END of 'Map Properties'
 
     //Map Methods
+    //Modifies game.map.rooms to contain an array of new Room objects;
+    //Called by game.startGame():
     populateMap() {
         for (let i = 0; i < game.map.rooms.length; i++) {
             this.rooms[i] = new Room (i, undefined);
@@ -185,6 +170,8 @@ class Player {
     //END of 'Player Properties'
 
     //Player Methods
+    //Updates player's location properties to reflect chosen direction;
+    //Called by $directionBtns' click listener:
     getNewPlayerLocation(selectedLocationID) {
         this.previousLocation = this.currentLocation;
         this.currentLocation = selectedLocationID;
