@@ -181,7 +181,7 @@ class Player {
     //END of 'Player Properties'
 
     //Player Methods
-    movePlayer(selectedLocationID) {
+    getNewPlayerLocation(selectedLocationID) {
         this.previousLocation = this.currentLocation;
         this.currentLocation = selectedLocationID;
     }
@@ -224,7 +224,7 @@ $quitBtn.on('click', function() {
     $introductionScreen.show();
 })
 $directionBtns.on('click', function() {
-    game.player.movePlayer(this.value);
+    game.player.getNewPlayerLocation(this.value);
     gameInterface.printNewLocationInformation();
 })
 //END of "Add Event Listeners"
