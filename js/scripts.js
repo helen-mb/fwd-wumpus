@@ -19,28 +19,28 @@ const $directionBtns = $('.direction-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
-const roomConnectionsArray = [
-    [1, 7, 4],
-    [2, 9, 0],
-    [3, 11, 1],
-    [4, 13, 2],
-    [0, 5, 3],
-    [6, 14, 4],
-    [7, 16, 5],
-    [8, 6, 0],
-    [9, 17, 7],
-    [10, 8, 1],
-    [11, 18, 9],
-    [12, 10, 2],
-    [13, 19, 11],
-    [14, 12, 3],
-    [5, 15, 13],
-    [16, 19, 14],
-    [17, 15, 6],
-    [18, 16, 8],
-    [19, 17, 10],
-    [15, 18, 12]
-]
+// const roomConnectionsArray = [
+//     [1, 7, 4],
+//     [2, 9, 0],
+//     [3, 11, 1],
+//     [4, 13, 2],
+//     [0, 5, 3],
+//     [6, 14, 4],
+//     [7, 16, 5],
+//     [8, 6, 0],
+//     [9, 17, 7],
+//     [10, 8, 1],
+//     [11, 18, 9],
+//     [12, 10, 2],
+//     [13, 19, 11],
+//     [14, 12, 3],
+//     [5, 15, 13],
+//     [16, 19, 14],
+//     [17, 15, 6],
+//     [18, 16, 8],
+//     [19, 17, 10],
+//     [15, 18, 12]
+// ]
 let game;
 
 // --------------------------------------------------------------------------------
@@ -52,7 +52,9 @@ class Interface {
     //END of 'Interface Properties'
 
     //Interface Methods
-
+    printNewLocationInformation() {
+        
+    }
     //END of 'Interface Methods'
 }
 
@@ -60,7 +62,7 @@ class Interface {
 class Game {
     //Game Properties
     constructor () {
-        this.player = new Player(0);
+        this.player = new Player('0');
         this.map = new Map();
     }
     //END of 'Game Properties'
@@ -76,16 +78,36 @@ class Game {
 class Map {
     //Map Properties
     constructor () {
-        this.rooms = new Array(20);
         // this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
         // this.pits = new Array(2);
         // this.bats = new Array(2);
     }
+    rooms = [
+        [1, 7, 4],
+        [2, 9, 0],
+        [3, 11, 1],
+        [4, 13, 2],
+        [0, 5, 3],
+        [6, 14, 4],
+        [7, 16, 5],
+        [8, 6, 0],
+        [9, 17, 7],
+        [10, 8, 1],
+        [11, 18, 9],
+        [12, 10, 2],
+        [13, 19, 11],
+        [14, 12, 3],
+        [5, 15, 13],
+        [16, 19, 14],
+        [17, 15, 6],
+        [18, 16, 8],
+        [19, 17, 10],
+        [15, 18, 12]]
     //END of 'Map Properties'
 
     //Map Methods
     populateMap() {
-        for (let i = 0; i < roomConnectionsArray.length; i++) {
+        for (let i = 0; i < game.map.rooms.length; i++) {
             this.rooms[i] = new Room (i, undefined);
         }
     } 
@@ -97,7 +119,7 @@ class Room {
     //Room Properties
     constructor (index, hazard) {
         this.roomID = index;
-        this.neighbors = roomConnectionsArray[index];
+        this.neighbors = game.map.rooms[index];
         this.hazard = hazard;
     }
     //END of 'Room Properties'
@@ -151,9 +173,9 @@ class Pit {
 class Player {
     //Player Properties
     constructor (locationID) {
-        this.startLocation = locationID;
         this.currentLocation = locationID;
         this.previousLocation = undefined;
+        this.startLocation = locationID;
         //this.arrowSupply = 5;
     }
     //END of 'Player Properties'
