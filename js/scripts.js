@@ -10,6 +10,7 @@ const $eventScreen = $('.event-screen');
 const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
+const $clueDisplay = $('.clue-display')[0];
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -39,9 +40,16 @@ gameInterface = {
             $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
         }
-        console.log(game.player);
-        console.log(game.gameMap.rooms[game.player.currentLocation]);
-        console.log('neighbors', game.gameMap.rooms[game.player.currentLocation].neighbors);
+    },
+
+    printClue(nearbyHazards) {
+        let clueContent;
+        if (nearbyHazards.includes('wumpus')) {
+            clueContent = 'Ugh, this room stinks!'
+        } else {
+            clueContent = 'Nothing...'
+        }
+        $clueDisplay.innerText = clueContent;
     }
     //END of 'gameInterface Methods'
 }
@@ -62,6 +70,18 @@ class Game {
     startGame() {
         this.gameMap.populateGameMap();
         this.gameMap.rooms[this.wumpus.currentLocation].hazard = 'wumpus';
+    }
+
+    getNearbyHazards() {
+        let nearbyHazards = [];
+        game.gameMap.rooms[game.player.currentLocation].neighbors.forEach(
+            (neighbor) => {
+                if (game.gameMap.rooms[neighbor].hazard === 'wumpus') {
+                    nearbyHazards.push('wumpus');
+                };
+            }
+        )
+        gameInterface.printClue(nearbyHazards);
     }
     //END of 'Game Methods'
 }
@@ -221,6 +241,7 @@ $quitBtn.on('click', function() {
 })
 $directionBtns.on('click', function() {
     game.player.getNewPlayerLocation(this.value);
+    game.getNearbyHazards();
     gameInterface.printNewLocationInformation();
 })
 //END of "Add Event Listeners"
