@@ -39,6 +39,9 @@ gameInterface = {
             $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
         }
+        console.log(game.player);
+        console.log(game.gameMap.rooms[game.player.currentLocation]);
+        console.log('neighbors', game.gameMap.rooms[game.player.currentLocation].neighbors);
     }
     //END of 'gameInterface Methods'
 }
@@ -51,13 +54,14 @@ class Game {
     constructor () {
         this.player = new Player('0');
         this.gameMap = new GameMap();
-        this.wumpus = new Wumpus();
+        this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
     }
     //END of 'Game Properties'
 
     //Game Methods
     startGame() {
         this.gameMap.populateGameMap();
+        this.gameMap.rooms[this.wumpus.currentLocation].hazard = 'wumpus';
     }
     //END of 'Game Methods'
 }
@@ -122,11 +126,11 @@ class Room {
 //Class ??? of ???: Wumpus Class
 class Wumpus {
     // //Wumpus Properties
-    // constructor (locationID) {
-    //     this.startLocation = locationID;
-    //     this.currentLocation = locationID;
-    //     this.previousLocation = undefined;
-    // }
+    constructor (locationID) {
+        this.startLocation = locationID;
+        this.currentLocation = locationID;
+        this.previousLocation = undefined;
+    }
     // //END of 'Wumpus Properties'
 
     // //Wumpus Methods
