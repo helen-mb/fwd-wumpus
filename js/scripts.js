@@ -28,9 +28,11 @@ const $newGameBtn = $('.new-game-btn');
 
 //Collect Variables-----------------------------------------------------------------
 let game;
-const newGame = function() {
+const startNewGame = function() {
     game = new Game();
     game.startGame();
+    game.getNearbyHazards();
+    gameInterface.printNewLocationInformation();
 }
 //Object ??? of ???: gameInterface Object
 //An object to handle the user interface changes:
@@ -327,11 +329,16 @@ $exitInstructionsBtn.on('click', function() {
     $instructionsScreen.hide();
 })
 $enterBtn.on('click', function() {
-    newGame();
+    startNewGame();
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
-    game.getNearbyHazards();
+})
+$newGameBtn.on('click', function() {
+    startNewGame();
+    $gameEndScreen.hide();
+    $encounterScreen.hide();
+    $gameBoardScreen.show();
 })
 $quitBtn.on('click', function() {
     //TODO: END GAME ()
