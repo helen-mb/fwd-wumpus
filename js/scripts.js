@@ -75,14 +75,24 @@ class Game {
 
     getNearbyHazards() {
         let nearbyHazards = [];
-        game.gameMap.rooms[game.player.currentLocation].neighbors.forEach(
+        this.gameMap.rooms[this.player.currentLocation].neighbors.forEach(
             (neighbor) => {
-                if (game.gameMap.rooms[neighbor].hazard === 'wumpus') {
+                if (this.gameMap.rooms[neighbor].hazard === 'wumpus') {
                     nearbyHazards.push('wumpus');
                 };
             }
         )
         gameInterface.printClue(nearbyHazards);
+    }
+
+    getPresentHazards() {
+        if (game.gameMap.rooms[game.player.currentLocation].hazard === 'wumpus') {
+            game.wumpus.runWumpusEncounter();
+        }
+    }
+
+    endGame() {
+        alert('Game Over');
     }
     //END of 'Game Methods'
 }
@@ -148,17 +158,33 @@ class Room {
 class Wumpus {
     // //Wumpus Properties
     constructor (locationID) {
-        this.startLocation = locationID;
         this.currentLocation = locationID;
         this.previousLocation = undefined;
+        this.startLocation = locationID;
     }
     // //END of 'Wumpus Properties'
 
     // //Wumpus Methods
-    // relocateWumpus() {
-    //     this.previousLocation = this.currentLocation;
-    //     this.currentLocation = gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
-    // }
+    runWumpusEncounter() {
+        let randomReaction;
+        let randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
+        randomReactionPicker();
+        console.log(randomReaction);
+        switch (randomReaction) {
+            case 1:
+                game.endGame();
+                break;
+            default:
+                game.wumpus.relocateWumpus();
+        }
+    }
+
+    relocateWumpus() {
+        this.previousLocation = this.currentLocation;
+        game.gameMap.rooms[game.wumpus.currentLocation].hazard = undefined;
+        this.currentLocation = game.gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
+        game.gameMap.rooms[game.wumpus.currentLocation].hazard = 'wumpus';
+    }
     //END of 'Wumpus Methods'
 }
 
@@ -243,6 +269,7 @@ $quitBtn.on('click', function() {
 })
 $directionBtns.on('click', function() {
     game.player.getNewPlayerLocation(this.value);
+    game.getPresentHazards();
     game.getNearbyHazards();
     gameInterface.printNewLocationInformation();
 })
