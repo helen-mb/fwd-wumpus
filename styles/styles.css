@@ -83,7 +83,8 @@ button {
 .instructions-screen,
 .game-board-screen,
 .event-screen,
-.game-end-screen {
+.game-end-screen,
+.shoot-arrow-btn {
     display: none;
 }
 

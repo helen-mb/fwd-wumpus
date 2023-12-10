@@ -17,6 +17,8 @@ const $enterBtn = $('.enter-btn');
 const $exitInstructionsBtn = $('.hide-instructions-btn');
 const $quitBtn = $('.quit-btn');
 const $directionBtns = $('.direction-btn');
+const $prepareArrowBtn = $('.prepare-arrow-btn');
+const $shootArrowBtn = $('.shoot-arrow-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
@@ -36,7 +38,6 @@ gameInterface = {
         $currentLocationIDDisplay.innerText = game.player.currentLocation;
         //Updates the direction controls' values and displays to reflect
         //the new neighbors of the player's current location:
-        //TODO: fix room id's to match map
         for (let i = 0; i < $directionBtns.length; i++) {
             $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
@@ -95,6 +96,42 @@ class Game {
         alert('Game Over');
     }
     //END of 'Game Methods'
+}
+
+//Class ??? of ???: Player Class
+class Player {
+    //Player Properties
+    constructor (locationID) {
+        this.currentLocation = locationID;
+        this.previousLocation = undefined;
+        this.startLocation = locationID;
+        this.currentAction = 'move';
+        this.arrowSupply = 1;
+        this.preparedArrow = undefined;
+    }
+    //END of 'Player Properties'
+
+    //Player Methods
+    //Updates player's location properties to reflect chosen direction;
+    //Called by $directionBtns' click listener:
+    getNewPlayerLocation(selectedLocationID) {
+        this.previousLocation = this.currentLocation;
+        this.currentLocation = selectedLocationID;
+    }
+    prepareArrow() {
+        this.currentAction = 'preparing arrow'
+        this.preparedArrow = new Arrow();
+        console.log(this.preparedArrow);
+    }
+    shootArrow() {
+        this.currentAction = 'move';
+        if (this.preparedArrow.direction == game.wumpus.currentLocation) {
+            alert('you did it!');
+        } else {
+            return;
+        }
+    }
+    //END of 'Player Methods'
 }
 
 //Class ??? of ???: GameMap Class
@@ -169,7 +206,6 @@ class Wumpus {
         let randomReaction;
         let randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
         randomReactionPicker();
-        console.log(randomReaction);
         switch (randomReaction) {
             case 1:
                 game.endGame();
@@ -210,31 +246,12 @@ class Pit {
     //END of 'Pit Methods'
 }
 
-//Class ??? of ???: Player Class
-class Player {
-    //Player Properties
-    constructor (locationID) {
-        this.currentLocation = locationID;
-        this.previousLocation = undefined;
-        this.startLocation = locationID;
-        //this.arrowSupply = 5;
-    }
-    //END of 'Player Properties'
-
-    //Player Methods
-    //Updates player's location properties to reflect chosen direction;
-    //Called by $directionBtns' click listener:
-    getNewPlayerLocation(selectedLocationID) {
-        this.previousLocation = this.currentLocation;
-        this.currentLocation = selectedLocationID;
-    }
-    //END of 'Player Methods'
-}
-
 //Class ??? of ???: Arrow Class
 class Arrow {
     //Arrow Properties
-
+    constructor () {
+        this.direction = undefined;
+    }
     //END of 'Arrow Properties'
 
     //Arrow Methods
@@ -268,10 +285,25 @@ $quitBtn.on('click', function() {
     $introductionScreen.show();
 })
 $directionBtns.on('click', function() {
-    game.player.getNewPlayerLocation(this.value);
-    game.getPresentHazards();
-    game.getNearbyHazards();
-    gameInterface.printNewLocationInformation();
+    if (game.player.currentAction === 'move') {
+        game.player.getNewPlayerLocation(this.value);
+        game.getPresentHazards();
+        game.getNearbyHazards();
+        gameInterface.printNewLocationInformation();
+    } else if (game.player.currentAction === 'preparing arrow') {
+        game.player.preparedArrow.direction = this.value;
+        console.log(game.player.preparedArrow);
+    }
+})
+$prepareArrowBtn.on('click', function() {
+    $prepareArrowBtn.hide();
+    game.player.prepareArrow();
+    $shootArrowBtn.show();
+})
+$shootArrowBtn.on('click', function() {
+    $shootArrowBtn.hide();
+    game.player.shootArrow();
+    $prepareArrowBtn.show();
 })
 //END of "Add Event Listeners"
 
