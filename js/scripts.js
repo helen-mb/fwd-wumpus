@@ -28,7 +28,10 @@ const $newGameBtn = $('.new-game-btn');
 
 //Collect Variables-----------------------------------------------------------------
 let game;
-
+const newGame = function() {
+    game = new Game();
+    game.startGame();
+}
 //Object ??? of ???: gameInterface Object
 //An object to handle the user interface changes:
 gameInterface = {
@@ -144,6 +147,7 @@ class Game {
             default:
                 $gameEndHeading.innerText = 'Game Over';
                 $outcomeMessage.innerText = 'So much for bravery.';
+                $tryAgainBtn.show();
         }
         $gameEndScreen.show()
     }
@@ -323,8 +327,7 @@ $exitInstructionsBtn.on('click', function() {
     $instructionsScreen.hide();
 })
 $enterBtn.on('click', function() {
-    game = new Game();
-    game.startGame();
+    newGame();
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
