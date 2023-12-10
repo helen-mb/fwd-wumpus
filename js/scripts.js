@@ -11,6 +11,7 @@ const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
 const $clueDisplay = $('.clue-display')[0];
+const $encounterMessage = $('.encounter-message');
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -54,14 +55,27 @@ gameInterface = {
         $clueDisplay.innerText = clueContent;
     },
 
-    getEventScreen() {
+    getEventScreen(encounterType) {
+        const printEncounterMessage = () => {
+            $encounterMessage[0].innerText = encounterMessageContent;
+        }
         const returnToGameBoard = () => {
             $eventScreen.hide();
             $gameBoardScreen.show();
         }
-        setTimeout(returnToGameBoard, 3000);
+        let encounterMessageContent = '!!!';
         $gameBoardScreen.hide();
         $eventScreen.show();
+        printEncounterMessage();
+        setTimeout(printEncounterMessage, 2000);
+        switch (encounterType) {
+            case 'eaten':
+                encounterMessageContent = 'Eaten...'
+                break;
+            default:
+                encounterMessageContent = 'What was that?!'
+                setTimeout(returnToGameBoard, 3000);
+        }
     }
     //END of 'gameInterface Methods'
 }
@@ -98,13 +112,12 @@ class Game {
 
     getPresentHazards() {
         if (game.gameMap.rooms[game.player.currentLocation].hazard === 'wumpus') {
-            gameInterface.getEventScreen();
             game.wumpus.runWumpusEncounter();
         }
     }
 
     endGame() {
-        alert('Game Over');
+        console.log('GAME OVER');
     }
     //END of 'Game Methods'
 }
@@ -218,9 +231,11 @@ class Wumpus {
         randomReactionPicker();
         switch (randomReaction) {
             case 1:
+                gameInterface.getEventScreen('eaten');
                 game.endGame();
                 break;
             default:
+                gameInterface.getEventScreen('close call');
                 game.wumpus.relocateWumpus();
         }
     }
