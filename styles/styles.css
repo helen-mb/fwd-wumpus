@@ -82,7 +82,7 @@ button {
 .header-navigation,
 .instructions-screen,
 .game-board-screen,
-.event-screen,
+.encounter-screen,
 .game-end-screen,
 .shoot-arrow-btn {
     display: none;

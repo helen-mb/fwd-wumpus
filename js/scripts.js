@@ -6,7 +6,7 @@ const $headerNavigation = $('.header-navigation');
 const $introductionScreen = $('.introduction-screen');
 const $instructionsScreen = $('.instructions-screen');
 const $gameBoardScreen = $('.game-board-screen');
-const $eventScreen = $('.event-screen');
+const $encounterScreen = $('.encounter-screen');
 const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
@@ -55,17 +55,17 @@ gameInterface = {
         $clueDisplay.innerText = clueContent;
     },
 
-    getEventScreen(encounterType) {
+    getEncounterScreen(encounterType) {
         const printEncounterMessage = () => {
             $encounterMessage[0].innerText = encounterMessageContent;
         }
         const returnToGameBoard = () => {
-            $eventScreen.hide();
+            $encounterScreen.hide();
             $gameBoardScreen.show();
         }
         let encounterMessageContent = '!!!';
         $gameBoardScreen.hide();
-        $eventScreen.show();
+        $encounterScreen.show();
         printEncounterMessage();
         setTimeout(printEncounterMessage, 2000);
         switch (encounterType) {
@@ -231,11 +231,11 @@ class Wumpus {
         randomReactionPicker();
         switch (randomReaction) {
             case 1:
-                gameInterface.getEventScreen('eaten');
+                gameInterface.getEncounterScreen('eaten');
                 game.endGame();
                 break;
             default:
-                gameInterface.getEventScreen('close call');
+                gameInterface.getEncounterScreen('close call');
                 game.wumpus.relocateWumpus();
         }
     }
