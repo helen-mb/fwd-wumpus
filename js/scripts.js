@@ -56,13 +56,18 @@ gameInterface = {
 
     printClue(nearbyHazards) {
         let clueContent;
-        if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit')) {
+        if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit') && nearbyHazards.includes('bat') ) {
+            clueContent = 'Oh no, Am I trapped??'
+        } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit')) {
             clueContent = 'That draft really does not help the stink...'
+        } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('bat')) {
+            clueContent = 'Bats on the breeze...'
         } else if (nearbyHazards.includes('wumpus')) {
             clueContent = 'Ugh, this room stinks!'
         } else if (nearbyHazards.includes('pit')) {
-            console.log('pit nearby');
-            clueContent = 'Is that a breeze?'
+            clueContent = 'Where is that breeze coming from?'
+        } else if (nearbyHazards.includes('bat')) {
+            clueContent = 'Do bats still exists?'
         } else {
             clueContent = 'Nothing...'
         }
@@ -74,8 +79,12 @@ gameInterface = {
             $encounterMessage[0].innerText = encounterMessageContent;
         }
         const returnToGameBoard = () => {
+            gameInterface.printNewLocationInformation();
             $encounterScreen.hide();
             $gameBoardScreen.show();
+        }
+        const checkDropPoint = () => {
+            
         }
         const triggerVictoryState = () => {
             $encounterMessage.hide();
@@ -92,6 +101,10 @@ gameInterface = {
         printEncounterMessage();
         setTimeout(printEncounterMessage, 2000);
         switch (encounterType) {
+            case 'carried away':
+                encounterMessageContent = 'Huge bat, HUGE BAT!!!';
+                setTimeout(checkDropPoint, 4000);
+                break;
             case 'fallen':
                 encounterMessageContent = 'Fallen...';
                 setTimeout(triggerDefeatState, 4000);
@@ -121,7 +134,10 @@ class Game {
         this.player = new Player('0');
         this.gameMap = new GameMap();
         this.wumpus = new Wumpus(Math.floor(Math.random() * 19)+1);
-        this.pit = new Pit(Math.floor(Math.random() * 19)+1);
+        // this.pit = new Pit(Math.floor(Math.random() * 19)+1);
+        // this.bat = new Bat(Math.floor(Math.random() * 19)+1);
+        this.pit = new Pit(2);
+        this.bat = new Bat(1);
     }
     //END of 'Game Properties'
 
@@ -130,6 +146,7 @@ class Game {
         this.gameMap.populateGameMap();
         this.gameMap.rooms[this.wumpus.currentLocation].hazard = 'wumpus';
         this.gameMap.rooms[this.pit.location].hazard = 'pit';
+        this.gameMap.rooms[this.bat.location].hazard = 'bat';
     }
 
     getNearbyHazards() {
@@ -145,6 +162,8 @@ class Game {
     getPresentHazards() {
         if (game.gameMap.rooms[game.player.currentLocation].hazard === 'pit') {
             gameInterface.getEncounterScreen('fallen');
+        } else if (game.gameMap.rooms[game.player.currentLocation].hazard === 'bat') {
+            game.bat.relocatePlayer();
         } else if (game.gameMap.rooms[game.player.currentLocation].hazard === 'wumpus') {
             game.wumpus.runWumpusEncounter();
         }
@@ -205,11 +224,9 @@ class Player {
 //Class ??? of ???: GameMap Class
 class GameMap {
     //GameMap Properties
-    constructor () {
-        // this.wumpus = new Wumpus(Math.floor(Math.random() * 20));
-        // this.pits = new Array(2);
-        // this.bats = new Array(2);
-    }
+    // constructor () {
+
+    // }
     rooms = [
         [1, 7, 4],
         [2, 9, 0],
@@ -296,11 +313,19 @@ class Wumpus {
 //Class ??? of ???: Bat Class
 class Bat {
     //Bat Properties
-
+    constructor (locationID){
+        this.location = locationID;
+    }
     //END of 'Bat Properties'
 
     //Bat Methods
-
+    relocatePlayer() {
+        // game.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
+        game.player.getNewPlayerLocation(2);
+        game.getPresentHazards();
+        game.getNearbyHazards();
+        gameInterface.getEncounterScreen('carried away');
+    }
     //END of 'Bat Methods'
 }
 
