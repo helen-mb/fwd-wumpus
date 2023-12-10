@@ -31,8 +31,6 @@ let game;
 const createNewGame = function() {
     game = new Game();
     game.startGame();
-    game.getNearbyHazards();
-    gameInterface.printNewLocationInformation();
 }
 //Object ??? of ???: gameInterface Object
 //An object to handle the user interface changes:
@@ -56,6 +54,7 @@ gameInterface = {
 
     printClue(nearbyHazards) {
         let clueContent;
+        console.log(nearbyHazards);
         if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit') && nearbyHazards.includes('bat') ) {
             clueContent = 'Oh no, Am I trapped??'
         } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit')) {
@@ -138,37 +137,47 @@ class Game {
         this.player = new Player('0');
         this.gameMap = new GameMap();
         this.wumpus = new Wumpus(Math.floor(Math.random() * 19)+1);
-        // this.pit = new Pit(Math.floor(Math.random() * 19)+1);
-        // this.bat = new Bat(Math.floor(Math.random() * 19)+1);
-        this.pit = new Pit(2);
-        this.bat = new Bat(1);
+        this.pit = new Pit(Math.floor(Math.random() * 19)+1);
+        this.bat = new Bat(Math.floor(Math.random() * 19)+1);
     }
     //END of 'Game Properties'
 
     //Game Methods
     startGame() {
         this.gameMap.populateGameMap();
-        this.gameMap.rooms[this.wumpus.currentLocation].hazard = 'wumpus';
-        this.gameMap.rooms[this.pit.location].hazard = 'pit';
-        this.gameMap.rooms[this.bat.location].hazard = 'bat';
+        this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
+        this.gameMap.rooms[this.pit.location].hazards.push('pit');
+        this.gameMap.rooms[this.bat.location].hazards.push('bat');
+        game.getNearbyHazards();
+        gameInterface.printNewLocationInformation();
     }
 
     getNearbyHazards() {
         let nearbyHazards = [];
         this.gameMap.rooms[this.player.currentLocation].neighbors.forEach(
             (neighbor) => {
-                nearbyHazards.push(this.gameMap.rooms[neighbor].hazard);
+                if(this.gameMap.rooms[neighbor].hazards?.length !== 0) {
+                    console.log(this.gameMap.rooms[neighbor].hazards);
+                    this.gameMap.rooms[neighbor].hazards.forEach(
+                        (hazard) => {
+                            if(hazard){
+                                nearbyHazards.push(hazard) 
+                            }
+                        }
+                    )
+                    // nearbyHazards = [...nearbyHazards, ...this.gameMap.rooms[neighbor].hazards];
+                }
             }
         )
         gameInterface.printClue(nearbyHazards);
     }
 
     getPresentHazards() {
-        if (game.gameMap.rooms[game.player.currentLocation].hazard === 'pit') {
+        if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('pit')) {
             gameInterface.getEncounterScreen('fallen');
-        } else if (game.gameMap.rooms[game.player.currentLocation].hazard === 'bat') {
+        } else if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('bat')) {
             game.bat.relocatePlayer();
-        } else if (game.gameMap.rooms[game.player.currentLocation].hazard === 'wumpus') {
+        } else if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('wumpus')) {
             game.wumpus.runWumpusEncounter();
         }
     }
@@ -259,7 +268,7 @@ class GameMap {
     //Called by game.startGame():
     populateGameMap() {
         for (let i = 0; i < game.gameMap.rooms.length; i++) {
-            this.rooms[i] = new Room (i, undefined);
+            this.rooms[i] = new Room (i);
         }
     } 
     //END of 'GameMap Methods'
@@ -268,10 +277,10 @@ class GameMap {
 //Class ??? of ???: Room Class
 class Room {
     //Room Properties
-    constructor (index, hazard) {
+    constructor (index) {
         this.roomID = index;
         this.neighbors = game.gameMap.rooms[index];
-        this.hazard = hazard;
+        this.hazards = [];
     }
     //END of 'Room Properties'
 
