@@ -12,6 +12,8 @@ const $gameEndScreen = $('.game-end-screen');
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
 const $clueDisplay = $('.clue-display')[0];
 const $encounterMessage = $('.encounter-message');
+const $gameEndHeading = $('.game-end-heading')[0];
+const $outcomeMessage = $('.outcome-message')[0];
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -20,6 +22,8 @@ const $quitBtn = $('.quit-btn');
 const $directionBtns = $('.direction-btn');
 const $prepareArrowBtn = $('.prepare-arrow-btn');
 const $shootArrowBtn = $('.shoot-arrow-btn');
+const $tryAgainBtn = $('.try-again-btn');
+const $newGameBtn = $('.new-game-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
@@ -63,6 +67,10 @@ gameInterface = {
             $encounterScreen.hide();
             $gameBoardScreen.show();
         }
+        const triggerEndGame = () => {
+            $encounterMessage.hide();
+            game.endGame();
+        }
         let encounterMessageContent = '!!!';
         $gameBoardScreen.hide();
         $encounterScreen.show();
@@ -71,6 +79,7 @@ gameInterface = {
         switch (encounterType) {
             case 'eaten':
                 encounterMessageContent = 'Eaten...'
+                setTimeout(triggerEndGame, 4000);
                 break;
             default:
                 encounterMessageContent = 'What was that?!'
@@ -117,7 +126,17 @@ class Game {
     }
 
     endGame() {
-        console.log('GAME OVER');
+        switch ('gameOutcome') {
+            case 'victory':
+                $gameEndHeading.innerText = 'You Did It!';
+                $outcomeMessage.innerText = 'You killed the Wumpus. Your colony is safe again...for now...';
+                $tryAgainBtn.hide();
+                break;
+            default:
+                $gameEndHeading.innerText = 'Game Over';
+                $outcomeMessage.innerText = 'So much for bravery.';
+        }
+        $gameEndScreen.show()
     }
     //END of 'Game Methods'
 }
@@ -232,7 +251,6 @@ class Wumpus {
         switch (randomReaction) {
             case 1:
                 gameInterface.getEncounterScreen('eaten');
-                game.endGame();
                 break;
             default:
                 gameInterface.getEncounterScreen('close call');
@@ -306,6 +324,8 @@ $enterBtn.on('click', function() {
 $quitBtn.on('click', function() {
     //TODO: END GAME ()
     $gameBoardScreen.hide();
+    $encounterScreen.hide();
+    $gameEndScreen.hide();
     $headerNavigation.hide();
     $introductionScreen.show();
 })

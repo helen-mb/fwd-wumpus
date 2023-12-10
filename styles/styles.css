@@ -101,10 +101,15 @@ button {
 
 .static-pattern {
     position: absolute;
-    z-index: 2;
     top: 0;
     width: 100vw;
     height: 100vh;
     background-image: repeating-linear-gradient(36deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.25) 1px, transparent 0px, transparent 2px);
     background-size: 12px;
+}
+
+.game-end-screen {
+    position: absolute;
+    top: 0;
+    width: 100%;
 }
