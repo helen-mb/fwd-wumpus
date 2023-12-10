@@ -84,7 +84,11 @@ gameInterface = {
             $gameBoardScreen.show();
         }
         const checkDropPoint = () => {
-            
+            game.getPresentHazards();
+            game.getNearbyHazards();
+            if(!game.gameMap.rooms[game.player.currentLocation].hazard) {
+                returnToGameBoard();
+            }
         }
         const triggerVictoryState = () => {
             $encounterMessage.hide();
@@ -321,9 +325,7 @@ class Bat {
     //Bat Methods
     relocatePlayer() {
         // game.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
-        game.player.getNewPlayerLocation(2);
-        game.getPresentHazards();
-        game.getNearbyHazards();
+        game.player.getNewPlayerLocation(3);
         gameInterface.getEncounterScreen('carried away');
     }
     //END of 'Bat Methods'
