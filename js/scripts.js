@@ -52,6 +52,16 @@ gameInterface = {
             clueContent = 'Nothing...'
         }
         $clueDisplay.innerText = clueContent;
+    },
+
+    getEventScreen() {
+        const returnToGameBoard = () => {
+            $eventScreen.hide();
+            $gameBoardScreen.show();
+        }
+        setTimeout(returnToGameBoard, 3000);
+        $gameBoardScreen.hide();
+        $eventScreen.show();
     }
     //END of 'gameInterface Methods'
 }
@@ -88,6 +98,7 @@ class Game {
 
     getPresentHazards() {
         if (game.gameMap.rooms[game.player.currentLocation].hazard === 'wumpus') {
+            gameInterface.getEventScreen();
             game.wumpus.runWumpusEncounter();
         }
     }
@@ -121,7 +132,6 @@ class Player {
     prepareArrow() {
         this.currentAction = 'preparing arrow'
         this.preparedArrow = new Arrow();
-        console.log(this.preparedArrow);
     }
     shootArrow() {
         this.currentAction = 'move';
@@ -292,7 +302,6 @@ $directionBtns.on('click', function() {
         gameInterface.printNewLocationInformation();
     } else if (game.player.currentAction === 'preparing arrow') {
         game.player.preparedArrow.direction = this.value;
-        console.log(game.player.preparedArrow);
     }
 })
 $prepareArrowBtn.on('click', function() {
