@@ -67,19 +67,28 @@ gameInterface = {
             $encounterScreen.hide();
             $gameBoardScreen.show();
         }
-        const triggerEndGame = () => {
+        const triggerVictoryState = () => {
             $encounterMessage.hide();
-            game.endGame();
+            game.endGame('victory');
+        }
+        const triggerDefeatState = () => {
+            $encounterMessage.hide();
+            game.endGame('defeat');
         }
         let encounterMessageContent = '!!!';
         $gameBoardScreen.hide();
+        $encounterMessage.show();
         $encounterScreen.show();
         printEncounterMessage();
         setTimeout(printEncounterMessage, 2000);
         switch (encounterType) {
             case 'eaten':
-                encounterMessageContent = 'Eaten...'
-                setTimeout(triggerEndGame, 4000);
+                encounterMessageContent = 'Eaten...';
+                setTimeout(triggerDefeatState, 4000);
+                break;
+            case 'wumpus hit':
+                encounterMessageContent = 'What an awful noise...';
+                setTimeout(triggerVictoryState, 4000);
                 break;
             default:
                 encounterMessageContent = 'What was that?!'
@@ -125,8 +134,8 @@ class Game {
         }
     }
 
-    endGame() {
-        switch ('gameOutcome') {
+    endGame(gameOutcome) {
+        switch (gameOutcome) {
             case 'victory':
                 $gameEndHeading.innerText = 'You Did It!';
                 $outcomeMessage.innerText = 'You killed the Wumpus. Your colony is safe again...for now...';
@@ -168,7 +177,7 @@ class Player {
     shootArrow() {
         this.currentAction = 'move';
         if (this.preparedArrow.direction == game.wumpus.currentLocation) {
-            alert('you did it!');
+            gameInterface.getEncounterScreen('wumpus hit');
         } else {
             return;
         }
