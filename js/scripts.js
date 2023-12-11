@@ -54,19 +54,20 @@ gameInterface = {
 
     printClue(nearbyHazards) {
         let clueContent;
-        console.log(nearbyHazards);
         if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit') && nearbyHazards.includes('bat') ) {
-            clueContent = 'Oh no, Am I trapped??'
+            clueContent = "It stinks, it's breezy, and I hear screeching... Am I trapped??"
         } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit')) {
-            clueContent = 'That draft really does not help the stink...'
+            clueContent = "It stinks and there's a breeze..."
+        } else if (nearbyHazards.includes('pit') && nearbyHazards.includes('bat')) {
+            clueContent = "I hear screeching and there's a breeze..."
         } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('bat')) {
-            clueContent = 'Bats on the breeze...'
+            clueContent = "It stinks and I hear screeching..."
         } else if (nearbyHazards.includes('wumpus')) {
             clueContent = 'Ugh, this room stinks!'
         } else if (nearbyHazards.includes('pit')) {
             clueContent = 'Where is that breeze coming from?'
         } else if (nearbyHazards.includes('bat')) {
-            clueContent = 'Do bats still exists?'
+            clueContent = 'What is that screeching... bats!?'
         } else {
             clueContent = 'Nothing...'
         }
@@ -85,7 +86,7 @@ gameInterface = {
         const checkDropPoint = () => {
             game.getPresentHazards();
             game.getNearbyHazards();
-            if(!game.gameMap.rooms[game.player.currentLocation].hazard) {
+            if(game.gameMap.rooms[game.player.currentLocation].hazards.length === 0) {
                 returnToGameBoard();
             }
         }
@@ -157,7 +158,6 @@ class Game {
         this.gameMap.rooms[this.player.currentLocation].neighbors.forEach(
             (neighbor) => {
                 if(this.gameMap.rooms[neighbor].hazards?.length !== 0) {
-                    console.log(this.gameMap.rooms[neighbor].hazards);
                     this.gameMap.rooms[neighbor].hazards.forEach(
                         (hazard) => {
                             if(hazard){
@@ -316,9 +316,9 @@ class Wumpus {
 
     relocateWumpus() {
         this.previousLocation = this.currentLocation;
-        game.gameMap.rooms[game.wumpus.currentLocation].hazard = undefined;
         this.currentLocation = game.gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
-        game.gameMap.rooms[game.wumpus.currentLocation].hazard = 'wumpus';
+        game.gameMap.rooms[game.wumpus.previousLocation].hazards.splice(game.gameMap.rooms[game.wumpus.previousLocation].hazards.indexOf('wumpus'), 1);
+        game.gameMap.rooms[game.wumpus.currentLocation].hazards.push('wumpus');
     }
     //END of 'Wumpus Methods'
 }
@@ -333,8 +333,7 @@ class Bat {
 
     //Bat Methods
     relocatePlayer() {
-        // game.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
-        game.player.getNewPlayerLocation(3);
+        game.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
         gameInterface.getEncounterScreen('carried away');
     }
     //END of 'Bat Methods'
