@@ -183,6 +183,24 @@ class Game {
         }
     }
 
+    resetGame() {
+        //Resets wumpus
+        this.wumpus.previousLocation = this.wumpus.currentLocation;
+        this.wumpus.currentLocation = this.wumpus.startLocation;
+        //Resets map
+        this.gameMap.rooms[this.wumpus.previousLocation].hazards.splice(this.gameMap.rooms[this.wumpus.previousLocation].hazards.indexOf('wumpus'), 1);
+        this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
+        //Resets player
+        this.player.previousLocation = this.player.currentLocation;
+        this.player.currentLocation = this.player.startLocation;
+        //this.player.arrowSupply = 5;
+        game.getNearbyHazards();
+        gameInterface.printNewLocationInformation();
+        $encounterScreen.hide();
+        $gameEndScreen.hide();
+        $gameBoardScreen.show();
+    }
+
     endGame(gameOutcome) {
         switch (gameOutcome) {
             case 'victory':
@@ -421,6 +439,9 @@ $shootArrowBtn.on('click', function() {
     $shootArrowBtn.hide();
     game.player.shootArrow();
     $prepareArrowBtn.show();
+})
+$tryAgainBtn.on('click', function() {
+    game.resetGame();
 })
 //END of "Add Event Listeners"
 
