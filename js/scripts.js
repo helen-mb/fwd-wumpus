@@ -304,7 +304,7 @@ class Wumpus {
     // //Wumpus Methods
     runWumpusEncounter() {
         let randomReaction;
-        let randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
+        const randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
         randomReactionPicker();
         switch (randomReaction) {
             case 1:
@@ -320,8 +320,11 @@ class Wumpus {
     relocateWumpus() {
         this.previousLocation = this.currentLocation;
         this.currentLocation = game.gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
-        game.gameMap.rooms[game.wumpus.previousLocation].hazards.splice(game.gameMap.rooms[game.wumpus.previousLocation].hazards.indexOf('wumpus'), 1);
-        game.gameMap.rooms[game.wumpus.currentLocation].hazards.push('wumpus');
+        game.gameMap.rooms[this.previousLocation].hazards.splice(game.gameMap.rooms[this.previousLocation].hazards.indexOf('wumpus'), 1);
+        game.gameMap.rooms[this.currentLocation].hazards.push('wumpus');
+    }
+    printWumpusState(){
+        console.log(JSON.stringify(this));
     }
     //END of 'Wumpus Methods'
 }
