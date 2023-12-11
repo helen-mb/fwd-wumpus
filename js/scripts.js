@@ -124,6 +124,7 @@ gameInterface = {
             default:
                 encounterMessageContent = 'What was that?!'
                 setTimeout(returnToGameBoard, 3000);
+                break;
         }
     }
     //END of 'gameInterface Methods'
@@ -193,6 +194,7 @@ class Game {
                 $gameEndHeading.innerText = 'Game Over';
                 $outcomeMessage.innerText = 'So much for bravery.';
                 $tryAgainBtn.show();
+                break;
         }
         $gameEndScreen.show()
     }
@@ -311,6 +313,7 @@ class Wumpus {
             default:
                 gameInterface.getEncounterScreen('close call');
                 game.wumpus.relocateWumpus();
+                break;
         }
     }
 
