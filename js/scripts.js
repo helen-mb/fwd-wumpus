@@ -27,11 +27,7 @@ const $newGameBtn = $('.new-game-btn');
 //END of "Collect Elements"
 
 //Collect Variables-----------------------------------------------------------------
-let game;
-const createNewGame = function() {
-    game = new Game();
-    game.startGame();
-}
+
 //Object ??? of ???: gameInterface Object
 //An object to handle the user interface changes:
 gameInterface = {
@@ -393,6 +389,12 @@ class Arrow {
 
 
 // --------------------------------------------------------------------------------
+//Execute Game Logic---------------------------------------------------------------
+let game = new Game();
+//END of "Execute Game Logic"
+
+
+// --------------------------------------------------------------------------------
 //Add Event Listeners--------------------------------------------------------------
 $viewInstructionsBtns.on('click', function() {
     $instructionsScreen.show();
@@ -401,13 +403,13 @@ $exitInstructionsBtn.on('click', function() {
     $instructionsScreen.hide();
 })
 $enterBtn.on('click', function() {
-    createNewGame();
+    game.startGame();
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
 })
 $newGameBtn.on('click', function() {
-    createNewGame();
+    game.startGame();
     $gameEndScreen.hide();
     $encounterScreen.hide();
     $gameBoardScreen.show();
@@ -444,10 +446,3 @@ $tryAgainBtn.on('click', function() {
     game.resetGame();
 })
 //END of "Add Event Listeners"
-
-
-
-// --------------------------------------------------------------------------------
-//Execute Game Logic---------------------------------------------------------------
-
-//END of "Execute Game Logic"
