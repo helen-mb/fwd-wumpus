@@ -21,6 +21,7 @@ const $enterBtn = $('.enter-btn');
 const $exitInstructionsBtn = $('.hide-instructions-btn');
 const $quitBtn = $('.quit-btn');
 const $directionBtns = $('.direction-btn');
+const $moveActionBtn = $('.move-action-btn')
 const $prepareArrowBtn = $('.prepare-arrow-btn');
 const $shootArrowBtn = $('.shoot-arrow-btn');
 const $tryAgainBtn = $('.try-again-btn');
@@ -40,6 +41,7 @@ gameInterface = {
     //gameInterface Methods
     //Called by $directionBtns' click listener:
     printNewLocationInformation() {
+        $moveActionBtn.addClass('active-action');
         //Updates the printed display of the player's current location:
         $currentLocationIDDisplay.innerText = game.player.currentLocation;
         //Updates the direction controls' values and displays to reflect
@@ -273,9 +275,15 @@ class Player {
     prepareArrow() {
         this.currentAction = 'preparing arrow'
         this.preparedArrow = new Arrow();
+        $moveActionBtn.removeClass('active-action');
+        $shootArrowBtn.addClass('active-action');
+        $directionBtns.addClass('preparing-to-shoot');
     }
     shootArrow() {
         this.currentAction = 'move';
+        $moveActionBtn.addClass('active-action');
+        $directionBtns.removeClass('selected-direction');
+        $shootArrowBtn.removeClass('preparing-to-shoot')
         // FIXME: How to reference the parent class so I'm not calling on "game"?
         // Or should this method belong elsewhere?:
         if (this.preparedArrow.direction == game.wumpus.currentLocation) {
@@ -439,6 +447,12 @@ $directionBtns.on('click', function() {
         gameInterface.printNewLocationInformation();
     } else if (game.player.currentAction === 'preparing arrow') {
         game.player.preparedArrow.direction = this.value;
+        $directionBtns.removeClass('preparing-to-shoot');
+        $directionBtns.removeClass('selected-direction');
+        this.classList.add('selected-direction');
+        $shootArrowBtn.removeClass('active-action');
+        $shootArrowBtn.addClass('preparing-to-shoot');
+
     }
 })
 $prepareArrowBtn.on('click', function() {
@@ -450,6 +464,9 @@ $shootArrowBtn.on('click', function() {
     $shootArrowBtn.hide();
     game.player.shootArrow();
     $prepareArrowBtn.show();
+})
+$moveActionBtn.on('click', function() {
+    
 })
 $tryAgainBtn.on('click', function() {
     game.resetGame();
