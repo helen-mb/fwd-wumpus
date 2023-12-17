@@ -459,6 +459,7 @@ $directionBtns.on('click', function() {
         $directionBtns.removeClass('preparing-to-shoot');
         $directionBtns.removeClass('selected-direction');
         this.classList.add('selected-direction');
+        $shootArrowBtn.prop('disabled', false);
         $shootArrowBtn.removeClass('active-action');
         $shootArrowBtn.addClass('preparing-to-shoot');
 
@@ -471,6 +472,7 @@ $prepareArrowBtn.on('click', function() {
     $shootActionImage.show();
     $prepareArrowBtn.hide();
     game.player.prepareArrow();
+    $shootArrowBtn.prop('disabled', true);
     $shootArrowBtn.show();
 })
 $shootArrowBtn.on('click', function() {

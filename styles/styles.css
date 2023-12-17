@@ -130,6 +130,10 @@ button {
     cursor: pointer;
 }
 
+button:disabled {
+    color: green;
+}
+
 button:hover {
     box-shadow: green 0 0px 20px ;
 }
