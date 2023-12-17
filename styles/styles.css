@@ -20,7 +20,7 @@ html {
 .pop-up,
 .view-finder-container,
 .map-container,
-.arrow-controls-container,
+.player-action-container,
 .message-board {
     border: solid 2px white;
     background-color: black;
@@ -40,8 +40,32 @@ header {
 }
 
 .view-finder-container {
-    grid-column: 1/4;
+    grid-column: 2/4;
     grid-row: 1/4;
+    position: relative;
+}
+
+.view-finder-container p:first-of-type {
+    width: fit-content;
+    text-align: left;
+    border: white solid 2px;
+    background-color: black;
+    padding: 0.5rem 2rem;
+    margin: -0.5rem -1.3rem;
+}
+
+.clue-display {
+    position: absolute;
+    top: 0;
+    right: -5rem;
+    border: white solid 1px;
+    background-color: black;
+    border-radius: 15px;
+    padding: 0.5rem 2rem;
+    margin: 1rem 3rem;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-style: italic;
 }
 
 .controls-container {
@@ -51,13 +75,29 @@ header {
 }
 
 .direction-controls-container {
-    grid-column: 1/4;
+    grid-column: 2/4;
     grid-row: 4/5;
 }
 
-.arrow-controls-container {
+.player-action-container {
     grid-column: 4/5;
-    grid-row: 2/5;
+    grid-row: 1/5;
+}
+
+.player-action-container img {
+    width: 50%;
+    background-color: green;
+    box-shadow: black 0 0 50px 30px inset;
+    border-radius: 30% 30%;
+}
+
+.shoot-action-image {
+    display: none;
+}
+
+.move-action-btn {
+    box-shadow: green 0 0 20px 3px;
+    color: yellowgreen;
 }
 
 .message-board {
@@ -74,8 +114,14 @@ button {
     padding: 1rem;
     background-color: transparent;
     border-color: green;
-    color: greenyellow;
+    color: green;
+    margin: 5px;
+    transition: box-shadow 0.4s;
+}
 
+button:hover {
+    /* box-shadow: greenyellow 0 0px 20px ; */
+    color: yellowgreen;
 }
 
 /* Screen Behavior */
