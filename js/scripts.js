@@ -198,6 +198,12 @@ class Game {
         this.gameMap.rooms[this.wumpus.previousLocation].hazards.splice(this.gameMap.rooms[this.wumpus.previousLocation].hazards.indexOf('wumpus'), 1);
         this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
     }
+
+    relocatePlayer() {
+        this.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
+        gameInterface.getEncounterScreen('carried away');
+    }
+
     resetGame() {
         //Resets wumpus
         this.wumpus.previousLocation = this.wumpus.currentLocation;
@@ -320,7 +326,6 @@ class Room {
     //END of 'Room Properties'
 
     //Room Methods
-
     //END of 'Room Methods'
 }
 
@@ -347,10 +352,6 @@ class Bat {
     //END of 'Bat Properties'
 
     //Bat Methods
-    relocatePlayer() {
-        game.player.getNewPlayerLocation(Math.floor(Math.random() * 20));
-        gameInterface.getEncounterScreen('carried away');
-    }
     //END of 'Bat Methods'
 }
 
@@ -363,7 +364,6 @@ class Pit {
     //END of 'Pit Properties'
 
     //Pit Methods
-
     //END of 'Pit Methods'
 }
 
@@ -376,7 +376,6 @@ class Arrow {
     //END of 'Arrow Properties'
 
     //Arrow Methods
-
     //END of 'Arrow Methods'
 }
 //END of "Collect Classes"
