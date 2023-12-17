@@ -105,6 +105,12 @@ header {
     padding: 2rem;
 }
 
+.encounter-screen .message-board {
+    top: 5rem;
+    left: 0;
+    right: 0;
+}
+
 .clue-display {
     position: absolute;
     top: 0;
@@ -207,6 +213,8 @@ button.selected-direction:hover {
 
 footer {
     margin-top: 2rem;
-    position: sticky;
+    position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
 }

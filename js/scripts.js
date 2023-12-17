@@ -83,6 +83,8 @@ gameInterface = {
             $encounterMessage[0].innerText = encounterMessageContent;
         }
         const returnToGameBoard = () => {
+            encounterMessageContent = "!!!";
+            printEncounterMessage();
             this.printNewLocationInformation();
             $encounterScreen.hide();
             $gameBoardScreen.show();
@@ -95,10 +97,14 @@ gameInterface = {
             }
         }
         const triggerVictoryState = () => {
+            encounterMessageContent = "!!!";
+            printEncounterMessage();
             $encounterMessage.hide();
             game.endGame('victory');
         }
         const triggerDefeatState = () => {
+            encounterMessageContent = "!!!";
+            printEncounterMessage();
             $encounterMessage.hide();
             game.endGame('defeat');
         }
@@ -159,6 +165,7 @@ class Game {
         this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
         this.gameMap.rooms[this.pit.location].hazards.push('pit');
         this.gameMap.rooms[this.bat.location].hazards.push('bat');
+        $encounterMessage.show();
         this.getNearbyHazards();
         gameInterface.printNewLocationInformation();
     }
@@ -231,6 +238,8 @@ class Game {
         this.player.currentLocation = this.player.startLocation;
         //this.player.arrowSupply = 5;
         this.getNearbyHazards();
+        $encounterMessage.innerText = "!!!";
+        $encounterMessage.show();
         gameInterface.printNewLocationInformation();
         $encounterScreen.hide();
         $gameEndScreen.hide();
