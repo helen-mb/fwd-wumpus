@@ -12,6 +12,7 @@ const $gameEndScreen = $('.game-end-screen');
 //Visual Elements
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
 const $clueDisplay = $('.clue-display')[0];
+const $gameMessage = $('.game-message')[0];
 const $encounterMessage = $('.encounter-message');
 const $gameEndHeading = $('.game-end-heading')[0];
 const $outcomeMessage = $('.outcome-message')[0];
@@ -66,7 +67,7 @@ gameInterface = {
         } else if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('bat')) {
             clueContent = "It stinks and I hear screeching..."
         } else if (nearbyHazards.includes('wumpus')) {
-            clueContent = 'Ugh, this room stinks!'
+            clueContent = 'Ugh, this room stinks! It must be close.'
         } else if (nearbyHazards.includes('pit')) {
             clueContent = 'Where is that breeze coming from?'
         } else if (nearbyHazards.includes('bat')) {
@@ -453,6 +454,7 @@ $directionBtns.on('click', function() {
         game.getNearbyHazards();
         gameInterface.printNewLocationInformation();
     } else if (game.player.currentAction === 'preparing arrow') {
+        $gameMessage.innerText = `Aiming for Room ${this.value}. Shoot!`;
         game.player.preparedArrow.direction = this.value;
         $directionBtns.removeClass('preparing-to-shoot');
         $directionBtns.removeClass('selected-direction');
@@ -464,6 +466,7 @@ $directionBtns.on('click', function() {
 })
 $prepareArrowBtn.on('click', function() {
     $currentActionDisplay.innerText = 'PREPARING TO SHOOT'
+    $gameMessage.innerText = 'You are preparing an arrow. What room are you aiming for?';
     $moveActionImage.hide();
     $shootActionImage.show();
     $prepareArrowBtn.hide();
@@ -472,6 +475,7 @@ $prepareArrowBtn.on('click', function() {
 })
 $shootArrowBtn.on('click', function() {
     $currentActionDisplay.innerText = 'MOVING'
+    $gameMessage.innerText = 'You are on the move. What room do you want to investigate?';
     $shootActionImage.hide();
     $moveActionImage.show();
     $directionBtns.removeClass('preparing-to-shoot');
@@ -482,6 +486,7 @@ $shootArrowBtn.on('click', function() {
 $moveActionBtn.on('click', function() {
     if (game.player.currentAction === 'preparing arrow') {
         $currentActionDisplay.innerText = 'MOVING'
+        $gameMessage.innerText = 'You are on the move. What room do you want to investigate?'; 
         $shootActionImage.hide();
         $moveActionImage.show();
         game.player.putArrowAway();
