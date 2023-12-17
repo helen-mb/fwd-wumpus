@@ -176,9 +176,28 @@ class Game {
             game.bat.relocatePlayer();
         } else if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('wumpus')) {
             game.wumpus.runWumpusEncounter();
+
+    runWumpusEncounter() {
+        let randomReaction;
+        const randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
+        randomReactionPicker();
+        switch (randomReaction) {
+            case 1:
+                gameInterface.getEncounterScreen('eaten');
+                break;
+            default:
+                gameInterface.getEncounterScreen('close call');
+                this.relocateWumpus();
+                break;
         }
     }
 
+    relocateWumpus() {
+        this.wumpus.previousLocation = this.wumpus.currentLocation;
+        this.wumpus.currentLocation = this.gameMap.rooms[this.wumpus.currentLocation].neighbors[Math.floor(Math.random()*3)];
+        this.gameMap.rooms[this.wumpus.previousLocation].hazards.splice(this.gameMap.rooms[this.wumpus.previousLocation].hazards.indexOf('wumpus'), 1);
+        this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
+    }
     resetGame() {
         //Resets wumpus
         this.wumpus.previousLocation = this.wumpus.currentLocation;
@@ -307,39 +326,15 @@ class Room {
 
 //Class ??? of ???: Wumpus Class
 class Wumpus {
-    // //Wumpus Properties
+    //Wumpus Properties
     constructor (locationID) {
         this.currentLocation = locationID;
         this.previousLocation = undefined;
         this.startLocation = locationID;
     }
-    // //END of 'Wumpus Properties'
+    //END of 'Wumpus Properties'
 
-    // //Wumpus Methods
-    runWumpusEncounter() {
-        let randomReaction;
-        const randomReactionPicker = () => randomReaction = Math.floor(Math.random()*2)
-        randomReactionPicker();
-        switch (randomReaction) {
-            case 1:
-                gameInterface.getEncounterScreen('eaten');
-                break;
-            default:
-                gameInterface.getEncounterScreen('close call');
-                game.wumpus.relocateWumpus();
-                break;
-        }
-    }
-
-    relocateWumpus() {
-        this.previousLocation = this.currentLocation;
-        this.currentLocation = game.gameMap.rooms[this.currentLocation].neighbors[Math.floor(Math.random()*3)];
-        game.gameMap.rooms[this.previousLocation].hazards.splice(game.gameMap.rooms[this.previousLocation].hazards.indexOf('wumpus'), 1);
-        game.gameMap.rooms[this.currentLocation].hazards.push('wumpus');
-    }
-    printWumpusState(){
-        console.log(JSON.stringify(this));
-    }
+    //Wumpus Methods
     //END of 'Wumpus Methods'
 }
 
