@@ -127,6 +127,7 @@ button {
     color: yellowgreen;
     margin: 0.5rem;
     transition: box-shadow 0.4s, color 0.2s;
+    cursor: pointer;
 }
 
 button:hover {
@@ -143,7 +144,8 @@ button.active-action {
 
 button.preparing-to-shoot {
     box-shadow: green 0 0 20px 3px;
-    animation: glow 0.8s infinite alternate
+    animation: glow 0.8s infinite alternate;
+    cursor: crosshair;
 }
 
 button.selected-direction,
