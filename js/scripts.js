@@ -28,6 +28,7 @@ const $newGameBtn = $('.new-game-btn');
 
 //Collect Variables-----------------------------------------------------------------
 
+// TODO: Move game interface to Game class??
 //Object ??? of ???: gameInterface Object
 //An object to handle the user interface changes:
 gameInterface = {
@@ -75,7 +76,7 @@ gameInterface = {
             $encounterMessage[0].innerText = encounterMessageContent;
         }
         const returnToGameBoard = () => {
-            gameInterface.printNewLocationInformation();
+            this.printNewLocationInformation();
             $encounterScreen.hide();
             $gameBoardScreen.show();
         }
@@ -146,7 +147,7 @@ class Game {
         this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
         this.gameMap.rooms[this.pit.location].hazards.push('pit');
         this.gameMap.rooms[this.bat.location].hazards.push('bat');
-        game.getNearbyHazards();
+        this.getNearbyHazards();
         gameInterface.printNewLocationInformation();
     }
 
@@ -170,12 +171,14 @@ class Game {
     }
 
     getPresentHazards() {
-        if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('pit')) {
+        if (this.gameMap.rooms[this.player.currentLocation].hazards.includes('pit')) {
             gameInterface.getEncounterScreen('fallen');
-        } else if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('bat')) {
-            game.bat.relocatePlayer();
-        } else if (game.gameMap.rooms[game.player.currentLocation].hazards.includes('wumpus')) {
-            game.wumpus.runWumpusEncounter();
+        } else if (this.gameMap.rooms[this.player.currentLocation].hazards.includes('bat')) {
+            this.relocatePlayer();
+        } else if (this.gameMap.rooms[this.player.currentLocation].hazards.includes('wumpus')) {
+            this.runWumpusEncounter();
+        }
+    }
 
     runWumpusEncounter() {
         let randomReaction;
@@ -215,7 +218,7 @@ class Game {
         this.player.previousLocation = this.player.currentLocation;
         this.player.currentLocation = this.player.startLocation;
         //this.player.arrowSupply = 5;
-        game.getNearbyHazards();
+        this.getNearbyHazards();
         gameInterface.printNewLocationInformation();
         $encounterScreen.hide();
         $gameEndScreen.hide();
@@ -254,6 +257,7 @@ class Player {
     //END of 'Player Properties'
 
     //Player Methods
+    //TODO: Move methods to game class??
     //Updates player's location properties to reflect chosen direction;
     //Called by $directionBtns' click listener:
     getNewPlayerLocation(selectedLocationID) {
@@ -266,6 +270,8 @@ class Player {
     }
     shootArrow() {
         this.currentAction = 'move';
+        // FIXME: How to reference the parent class so I'm not calling on "game"?
+        // Or should this method belong elsewhere?:
         if (this.preparedArrow.direction == game.wumpus.currentLocation) {
             gameInterface.getEncounterScreen('wumpus hit');
         } else {
@@ -320,6 +326,7 @@ class Room {
     //Room Properties
     constructor (index) {
         this.roomID = index;
+        // FIXME: How to reference parent class - or should this move?:
         this.neighbors = game.gameMap.rooms[index];
         this.hazards = [];
     }
@@ -390,6 +397,7 @@ let game = new Game();
 
 // --------------------------------------------------------------------------------
 //Add Event Listeners--------------------------------------------------------------
+//TODO: Should event listeners live in the Game class as methods?
 $viewInstructionsBtns.on('click', function() {
     $instructionsScreen.show();
 })
@@ -416,6 +424,7 @@ $quitBtn.on('click', function() {
     $headerNavigation.hide();
     $introductionScreen.show();
 })
+//FIXME: Should I refactor this to call a Game class method?
 $directionBtns.on('click', function() {
     if (game.player.currentAction === 'move') {
         game.player.getNewPlayerLocation(this.value);
