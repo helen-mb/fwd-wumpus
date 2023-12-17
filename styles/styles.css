@@ -201,4 +201,6 @@ button.selected-direction:hover {
 
 footer {
     margin-top: 2rem;
+    position: sticky;
+    bottom: 0;
 }

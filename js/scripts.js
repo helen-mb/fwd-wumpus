@@ -15,6 +15,9 @@ const $clueDisplay = $('.clue-display')[0];
 const $encounterMessage = $('.encounter-message');
 const $gameEndHeading = $('.game-end-heading')[0];
 const $outcomeMessage = $('.outcome-message')[0];
+const $currentActionDisplay = $('.current-action-display')[0];
+const $moveActionImage = $('.move-action-image');
+const $shootActionImage = $('.shoot-action-image');
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
@@ -460,17 +463,27 @@ $directionBtns.on('click', function() {
     }
 })
 $prepareArrowBtn.on('click', function() {
+    $currentActionDisplay.innerText = 'PREPARING TO SHOOT'
+    $moveActionImage.hide();
+    $shootActionImage.show();
     $prepareArrowBtn.hide();
     game.player.prepareArrow();
     $shootArrowBtn.show();
 })
 $shootArrowBtn.on('click', function() {
+    $currentActionDisplay.innerText = 'MOVING'
+    $shootActionImage.hide();
+    $moveActionImage.show();
+    $directionBtns.removeClass('preparing-to-shoot');
     $shootArrowBtn.hide();
     game.player.shootArrow();
     $prepareArrowBtn.show();
 })
 $moveActionBtn.on('click', function() {
     if (game.player.currentAction === 'preparing arrow') {
+        $currentActionDisplay.innerText = 'MOVING'
+        $shootActionImage.hide();
+        $moveActionImage.show();
         game.player.putArrowAway();
         $directionBtns.removeClass('preparing-to-shoot selected-direction');
         $shootArrowBtn.removeClass('preparing-to-shoot active-action');
