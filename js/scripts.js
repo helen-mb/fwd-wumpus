@@ -279,6 +279,10 @@ class Player {
         $shootArrowBtn.addClass('active-action');
         $directionBtns.addClass('preparing-to-shoot');
     }
+    putArrowAway() {
+        this.currentAction = 'move';
+        this.preparedArrow = undefined;
+    }
     shootArrow() {
         this.currentAction = 'move';
         $moveActionBtn.addClass('active-action');
@@ -466,7 +470,16 @@ $shootArrowBtn.on('click', function() {
     $prepareArrowBtn.show();
 })
 $moveActionBtn.on('click', function() {
-    
+    if (game.player.currentAction === 'preparing arrow') {
+        game.player.putArrowAway();
+        $directionBtns.removeClass('preparing-to-shoot selected-direction');
+        $shootArrowBtn.removeClass('preparing-to-shoot active-action');
+        $shootArrowBtn.hide();
+        $prepareArrowBtn.show();
+        $moveActionBtn.addClass('active-action');
+    } else {
+        return;
+    }
 })
 $tryAgainBtn.on('click', function() {
     game.resetGame();
