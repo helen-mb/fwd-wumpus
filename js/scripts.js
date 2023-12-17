@@ -133,16 +133,21 @@ gameInterface = {
 class Game {
     //Game Properties
     constructor () {
-        this.player = new Player('0');
-        this.gameMap = new GameMap();
-        this.wumpus = new Wumpus(Math.floor(Math.random() * 19)+1);
-        this.pit = new Pit(Math.floor(Math.random() * 19)+1);
-        this.bat = new Bat(Math.floor(Math.random() * 19)+1);
+        this.player;
+        this.gameMap;
+        this.wumpus;
+        this.pit;
+        this.bat;
     }
     //END of 'Game Properties'
 
     //Game Methods
     startGame() {
+        this.player = new Player('0');
+        this.gameMap = new GameMap();
+        this.wumpus = new Wumpus(Math.floor(Math.random() * 19)+1);
+        this.pit = new Pit(Math.floor(Math.random() * 19)+1);
+        this.bat = new Bat(Math.floor(Math.random() * 19)+1);
         this.gameMap.populateGameMap();
         this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
         this.gameMap.rooms[this.pit.location].hazards.push('pit');
