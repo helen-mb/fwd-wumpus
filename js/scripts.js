@@ -174,7 +174,7 @@ class Game {
         let nearbyHazards = [];
         this.gameMap.rooms[this.player.currentLocation].neighbors.forEach(
             (neighbor) => {
-                if(this.gameMap.rooms[neighbor].hazards?.length !== 0) {
+                if(this.gameMap.rooms[neighbor].hazards.length !== 0) {
                     this.gameMap.rooms[neighbor].hazards.forEach(
                         (hazard) => {
                             if(hazard){
@@ -288,9 +288,6 @@ class Player {
     prepareArrow() {
         this.currentAction = 'preparing arrow'
         this.preparedArrow = new Arrow();
-        $moveActionBtn.removeClass('active-action');
-        $shootArrowBtn.addClass('active-action');
-        $directionBtns.addClass('preparing-to-shoot');
     }
     putArrowAway() {
         this.currentAction = 'move';
@@ -298,9 +295,6 @@ class Player {
     }
     shootArrow() {
         this.currentAction = 'move';
-        $moveActionBtn.addClass('active-action');
-        $directionBtns.removeClass('selected-direction');
-        $shootArrowBtn.removeClass('preparing-to-shoot')
         // FIXME: How to reference the parent class so I'm not calling on "game"?
         // Or should this method belong elsewhere?:
         if (this.preparedArrow.direction == game.wumpus.currentLocation) {
@@ -423,30 +417,40 @@ class Arrow {
 // --------------------------------------------------------------------------------
 //Execute Game Logic---------------------------------------------------------------
 let game = new Game();
-//END of "Execute Game Logic"
-
 
 // --------------------------------------------------------------------------------
 //Add Event Listeners--------------------------------------------------------------
-//TODO: Should event listeners live in the Game class as methods?
+
+//---Handlers for instruction screen behavior:
 $viewInstructionsBtns.on('click', function() {
     $instructionsScreen.show();
 })
+
 $exitInstructionsBtn.on('click', function() {
     $instructionsScreen.hide();
 })
+
+//---Handlers for buttons that start/restart the game:
 $enterBtn.on('click', function() {
     game.startGame();
     $introductionScreen.hide();
     $headerNavigation.show();
     $gameBoardScreen.show();
 })
+
 $newGameBtn.on('click', function() {
     game.startGame();
     $gameEndScreen.hide();
     $encounterScreen.hide();
     $gameBoardScreen.show();
 })
+
+$tryAgainBtn.on('click', function() {
+    game.resetGame();
+})
+
+//---Handler for buttons that quit the game:
+    //Basically hides the active game so the player is forced to start a new game
 $quitBtn.on('click', function() {
     //TODO: END GAME ()
     $gameBoardScreen.hide();
@@ -455,13 +459,18 @@ $quitBtn.on('click', function() {
     $headerNavigation.hide();
     $introductionScreen.show();
 })
-//FIXME: Should I refactor this to call a Game class method?
+
+//---Handlers for game control buttons:
+    //*** A note on added/removed classes:
+    //They add/remove glow effects to reflect and help guide user behavior
 $directionBtns.on('click', function() {
+    //By default, player action is set to "move"
     if (game.player.currentAction === 'move') {
         game.player.getNewPlayerLocation(this.value);
         game.getPresentHazards();
         game.getNearbyHazards();
         gameInterface.printNewLocationInformation();
+    //Function of the direction btns change if user is prepping an arrow
     } else if (game.player.currentAction === 'preparing arrow') {
         $gameMessage.innerText = `Aiming for Room ${this.value}. Shoot!`;
         game.player.preparedArrow.direction = this.value;
@@ -471,46 +480,52 @@ $directionBtns.on('click', function() {
         $shootArrowBtn.prop('disabled', false);
         $shootArrowBtn.removeClass('active-action');
         $shootArrowBtn.addClass('preparing-to-shoot');
-
     }
 })
+
 $prepareArrowBtn.on('click', function() {
     $currentActionDisplay.innerText = 'PREPARING TO SHOOT'
     $gameMessage.innerText = 'You are preparing an arrow. What room are you aiming for?';
     $moveActionImage.hide();
     $shootActionImage.show();
-    $prepareArrowBtn.hide();
-    game.player.prepareArrow();
+    $moveActionBtn.removeClass('active-action');
+    $shootArrowBtn.addClass('active-action');
     $shootArrowBtn.prop('disabled', true);
+    $prepareArrowBtn.hide();
     $shootArrowBtn.show();
+    $directionBtns.addClass('preparing-to-shoot');
+    game.player.prepareArrow();
 })
+
 $shootArrowBtn.on('click', function() {
     $currentActionDisplay.innerText = 'MOVING'
     $gameMessage.innerText = 'You are on the move. What room do you want to investigate?';
     $shootActionImage.hide();
     $moveActionImage.show();
-    $directionBtns.removeClass('preparing-to-shoot');
+    $directionBtns.removeClass('selected-direction');
+    $directionBtns.removeClass('selected-direction');
+    $shootArrowBtn.removeClass('preparing-to-shoot')
     $shootArrowBtn.hide();
-    game.player.shootArrow();
     $prepareArrowBtn.show();
+    $moveActionBtn.addClass('active-action');
+    game.player.shootArrow();
 })
+
 $moveActionBtn.on('click', function() {
     if (game.player.currentAction === 'preparing arrow') {
         $currentActionDisplay.innerText = 'MOVING'
         $gameMessage.innerText = 'You are on the move. What room do you want to investigate?'; 
         $shootActionImage.hide();
         $moveActionImage.show();
-        game.player.putArrowAway();
         $directionBtns.removeClass('preparing-to-shoot selected-direction');
         $shootArrowBtn.removeClass('preparing-to-shoot active-action');
         $shootArrowBtn.hide();
         $prepareArrowBtn.show();
         $moveActionBtn.addClass('active-action');
+        game.player.putArrowAway();
     } else {
         return;
     }
 })
-$tryAgainBtn.on('click', function() {
-    game.resetGame();
-})
+
 //END of "Add Event Listeners"
