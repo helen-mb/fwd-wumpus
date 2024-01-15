@@ -95,14 +95,35 @@
             <div class="game-board-screen">
                 <div class="game-board-container grid-container">
                     <section class="map-container">
-                        <img src="images/prototype-map.png" alt="map" class="map" width="300px">
+                        <img src="images/map.0.png" alt="map" class="map" width="300px">
                     </section>
 
                     <section class="view-finder-container">
-                        <div class="image-container">
+                        <div class="view-finder-contents">
                             <p>This is room <span class="current-location-id-display">0</span></p>
                             <p class="clue-display"></p>
                             <img src="images/placeholder-viewfinder.png" alt="view-finder-view" class="contained-image" width="300px">
+                        </div>
+
+                        <div class="encounter-screen">
+                            <div class="static-pattern">
+                            </div>
+                        </div>
+
+                        <div class="game-end-screen">
+                            <section class="outcome-display">
+                                <h2 class="game-end-heading"></h2>
+                                <p class="outcome-message"></p>
+                                <div class="victory-image">
+                                    <div class="tenor-gif-embed" data-postid="22954713" data-share-method="host" data-aspect-ratio="1" data-width="100%"><a
+                                            href="https://tenor.com/view/rickroll-roll-rick-never-gonna-give-you-up-never-gonna-gif-22954713">Rickroll Never
+                                            Gonna Give You Up GIF</a>from <a href="https://tenor.com/search/rickroll-gifs">Rickroll GIFs</a></div>
+                                    <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+                                </div>
+                                <button class="try-again-btn">TRY AGAIN</button>
+                                <button class="new-game-btn">NEW GAME</button>
+                                <button class="quit-btn">QUIT</button>
+                            </section>
                         </div>
 
                         <section class="message-board">
@@ -129,11 +150,12 @@
                         <div>
                             <img src="images/boot-prints.svg" alt="boot prints" class="move-action-image">
                             <img src="images/crossbow.svg" alt="crossbow" class="shoot-action-image">
+                            <img src="images/skull.svg" alt="skull" class="defeat-image">
                         </div>
                         <div>
-                            <button class="prepare-arrow-btn">Prepare Arrow</button>
-                            <button class="shoot-arrow-btn">Shoot Arrow</button>
-                            <button class="move-action-btn">Move</button>
+                            <button class="action-btn prepare-arrow-btn">Prepare Arrow</button>
+                            <button class="action-btn shoot-arrow-btn">Shoot Arrow</button>
+                            <button class="action-btn move-action-btn">Move</button>
                         </div>
                         <!-- <div class="arrow-power-display">
                             <div class="power-5">_</div>
@@ -146,24 +168,6 @@
                         <button class="decrease-arrow-power arrow-power">-</button> -->
                     </div>
                 </div>
-            </div>
-
-            <div class="encounter-screen">
-                <section class="message-board">
-                    <p class="encounter-message">!!!</p>
-                </section>
-                <div class="static-pattern">
-                </div>
-            </div>
-
-            <div class="game-end-screen">
-                <section class="outcome-display">
-                    <h2 class="game-end-heading"></h2>
-                    <p class="outcome-message"></p>
-                    <button class="try-again-btn">TRY AGAIN</button>
-                    <button class="new-game-btn">NEW GAME</button>
-                    <button class="quit-btn">QUIT</button>
-                </section>
             </div>
 
         </main>
