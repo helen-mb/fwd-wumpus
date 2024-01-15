@@ -1,5 +1,10 @@
 'use strict,'
-//TODO: write instructions
+// TODO: Animate view-finder;
+// TODO: Add more hazards;
+// TODO: Limit number of arrows;
+// TODO: Allow arrow to traverse multiple rooms;
+// TODO: Add music and sound effects;
+
 // --------------------------------------------------------------------------------
 //Collect Elements-----------------------------------------------------------------
 //Game Screens
@@ -152,7 +157,7 @@ gameInterface = {
 // --------------------------------------------------------------------------------
 //Collect Classes------------------------------------------------------------------
 
-//Class ??? of ???: Game Class
+//Class 1: Game Class
 class Game {
     //Game Properties
     constructor () {
@@ -193,7 +198,6 @@ class Game {
                             }
                         }
                     )
-                    // nearbyHazards = [...nearbyHazards, ...this.gameMap.rooms[neighbor].hazards];
                 }
             }
         )
@@ -277,7 +281,7 @@ class Game {
     //END of 'Game Methods'
 }
 
-//Class ??? of ???: Player Class
+//Class 2: Player Class
 class Player {
     //Player Properties
     constructor (locationID) {
@@ -291,9 +295,7 @@ class Player {
     //END of 'Player Properties'
 
     //Player Methods
-    //TODO: Move methods to game class??
-    //Updates player's location properties to reflect chosen direction;
-    //Called by $directionBtns' click listener:
+    //---Updates player's location properties to reflect chosen direction;
     getNewPlayerLocation(selectedLocationID) {
         this.previousLocation = this.currentLocation;
         this.currentLocation = selectedLocationID;
@@ -308,8 +310,9 @@ class Player {
     }
     shootArrow() {
         this.currentAction = 'move';
-        // FIXME: How to reference the parent class so I'm not calling on "game"?
-        // Or should this method belong elsewhere?:
+        // FIXME: How to reference the parent class so
+        // I'm not calling on a named instance of Game?
+        // Or should such methods belong elsewhere?:
         if (this.preparedArrow.direction == game.wumpus.currentLocation) {
             gameInterface.getEncounterScreen('wumpus hit');
         } else {
@@ -319,12 +322,9 @@ class Player {
     //END of 'Player Methods'
 }
 
-//Class ??? of ???: GameMap Class
+//Class 3: GameMap Class
 class GameMap {
     //GameMap Properties
-    // constructor () {
-
-    // }
     rooms = [
         [1, 7, 4],
         [2, 9, 0],
@@ -359,12 +359,12 @@ class GameMap {
     //END of 'GameMap Methods'
 }
 
-//Class ??? of ???: Room Class
+
+//Class 4: Room Class
 class Room {
     //Room Properties
     constructor (index) {
         this.roomID = index;
-        // FIXME: How to reference parent class - or should this move?:
         this.neighbors = game.gameMap.rooms[index];
         this.hazards = [];
     }
@@ -374,7 +374,7 @@ class Room {
     //END of 'Room Methods'
 }
 
-//Class ??? of ???: Wumpus Class
+//Class 5: Wumpus Class
 class Wumpus {
     //Wumpus Properties
     constructor (locationID) {
@@ -388,7 +388,8 @@ class Wumpus {
     //END of 'Wumpus Methods'
 }
 
-//Class ??? of ???: Bat Class
+// TODO: refactor how hazards are represented?
+//Class 6: Bat Class
 class Bat {
     //Bat Properties
     constructor (locationID){
@@ -400,7 +401,7 @@ class Bat {
     //END of 'Bat Methods'
 }
 
-//Class ??? of ???: Pit Class
+//Class 7: Pit Class
 class Pit {
     //Pit Properties
     constructor (locationID){
@@ -412,7 +413,7 @@ class Pit {
     //END of 'Pit Methods'
 }
 
-//Class ??? of ???: Arrow Class
+//Class 8: Arrow Class
 class Arrow {
     //Arrow Properties
     constructor () {
@@ -483,7 +484,6 @@ $tryAgainBtn.on('click', function() {
 //---Handler for buttons that quit the game:
     //Basically hides the active game so the player is forced to start a new game
 $quitBtn.on('click', function() {
-    //TODO: END GAME ()
     $gameBoardScreen.hide();
     $encounterScreen.hide();
     $gameEndScreen.hide();
