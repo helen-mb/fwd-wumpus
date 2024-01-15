@@ -9,6 +9,7 @@ const $instructionsScreen = $('.instructions-screen');
 const $gameBoardScreen = $('.game-board-screen');
 const $encounterScreen = $('.encounter-screen');
 const $gameEndScreen = $('.game-end-screen');
+const $viewFinderContents = $('.view-finder-contents');
 //Visual Elements
 const $currentLocationIDDisplay = $('.current-location-id-display')[0];
 const $clueDisplay = $('.clue-display')[0];
@@ -19,43 +20,45 @@ const $outcomeMessage = $('.outcome-message')[0];
 const $currentActionDisplay = $('.current-action-display')[0];
 const $moveActionImage = $('.move-action-image');
 const $shootActionImage = $('.shoot-action-image');
+const $defeatImage = $('.defeat-image');
+const $victoryImage = $('.victory-image');
+const $mapImage = $('.map')[0];
 //Interactive Components
 const $viewInstructionsBtns = $('.view-instructions-btn');
 const $enterBtn = $('.enter-btn');
 const $exitInstructionsBtn = $('.hide-instructions-btn');
 const $quitBtn = $('.quit-btn');
 const $directionBtns = $('.direction-btn');
-const $moveActionBtn = $('.move-action-btn')
+const $actionBtns = $('.action-btn');
+const $moveActionBtn = $('.move-action-btn');
 const $prepareArrowBtn = $('.prepare-arrow-btn');
 const $shootArrowBtn = $('.shoot-arrow-btn');
 const $tryAgainBtn = $('.try-again-btn');
 const $newGameBtn = $('.new-game-btn');
 //END of "Collect Elements"
 
-//Collect Variables-----------------------------------------------------------------
-
-// TODO: Move game interface to Game class??
-//Object ??? of ???: gameInterface Object
+//gameInterface Object
 //An object to handle the user interface changes:
 gameInterface = {
-    //gameInterface Properties
-
-    //END of 'gameInterface Properties'
-
     //gameInterface Methods
-    //Called by $directionBtns' click listener:
+    //---Updates the map to reflect the player's current room
+    updateMap(roomID) {
+        let newImageSrc = `images/map.${roomID}.png`
+        $mapImage.setAttribute('src', newImageSrc);
+    },
+
     printNewLocationInformation() {
         $moveActionBtn.addClass('active-action');
-        //Updates the printed display of the player's current location:
+        //---Updates the printed display of the player's current location:
         $currentLocationIDDisplay.innerText = game.player.currentLocation;
-        //Updates the direction controls' values and displays to reflect
-        //the new neighbors of the player's current location:
+        //---Updates the direction controls' values and displays to reflect
+        //---the neighbors of the player's new location:
         for (let i = 0; i < $directionBtns.length; i++) {
             $directionBtns[i].value = game.gameMap.rooms[game.player.currentLocation].neighbors[i];
             $directionBtns[i].innerText = `Room ${$directionBtns[i].value}`;
         }
     },
-
+    //---Sets the contents of the printed clue based on which hazards are in neighboring rooms
     printClue(nearbyHazards) {
         let clueContent;
         if (nearbyHazards.includes('wumpus') && nearbyHazards.includes('pit') && nearbyHazards.includes('bat') ) {
@@ -77,17 +80,20 @@ gameInterface = {
         }
         $clueDisplay.innerText = clueContent;
     },
-
+    //---Handles the DOM manipulation during encounter events
     getEncounterScreen(encounterType) {
         const printEncounterMessage = () => {
-            $encounterMessage[0].innerText = encounterMessageContent;
+            $gameMessage.innerText = encounterMessageContent;
         }
         const returnToGameBoard = () => {
-            encounterMessageContent = "!!!";
+            encounterMessageContent = "Which room do you want to investigate?";
+            gameInterface.updateMap(game.player.currentLocation);
             printEncounterMessage();
             this.printNewLocationInformation();
+            $directionBtns.prop('disabled', false);
+            $actionBtns.prop('disabled', false);
             $encounterScreen.hide();
-            $gameBoardScreen.show();
+            $viewFinderContents.show();
         }
         const checkDropPoint = () => {
             game.getPresentHazards();
@@ -97,42 +103,46 @@ gameInterface = {
             }
         }
         const triggerVictoryState = () => {
-            encounterMessageContent = "!!!";
+            encounterMessageContent = "Victory!";
+            $victoryImage.show();
             printEncounterMessage();
-            $encounterMessage.hide();
             game.endGame('victory');
         }
         const triggerDefeatState = () => {
-            encounterMessageContent = "!!!";
+            encounterMessageContent = "You are dead.";
+            $moveActionImage.hide();
+            $shootActionImage.hide();
+            $currentActionDisplay.innerText = 'Hopefully Resting In Peace';
+            $defeatImage.show();
             printEncounterMessage();
-            $encounterMessage.hide();
             game.endGame('defeat');
         }
         let encounterMessageContent = '!!!';
-        $gameBoardScreen.hide();
-        $encounterMessage.show();
+        $directionBtns.prop('disabled', true);
+        $actionBtns.prop('disabled', true);
+        $viewFinderContents.hide();
         $encounterScreen.show();
         printEncounterMessage();
-        setTimeout(printEncounterMessage, 2000);
+        setTimeout(printEncounterMessage, 1000);
         switch (encounterType) {
             case 'carried away':
-                encounterMessageContent = 'Huge bat, HUGE BAT!!!';
-                setTimeout(checkDropPoint, 4000);
+                encounterMessageContent = 'Something carried you to a new room!';
+                setTimeout(checkDropPoint, 3000);
                 break;
             case 'fallen':
                 encounterMessageContent = 'Fallen...';
-                setTimeout(triggerDefeatState, 4000);
+                setTimeout(triggerDefeatState, 3000);
                 break;
             case 'eaten':
                 encounterMessageContent = 'Eaten...';
-                setTimeout(triggerDefeatState, 4000);
+                setTimeout(triggerDefeatState, 3000);
                 break;
             case 'wumpus hit':
                 encounterMessageContent = 'What an awful noise...';
-                setTimeout(triggerVictoryState, 4000);
+                setTimeout(triggerVictoryState, 3000);
                 break;
             default:
-                encounterMessageContent = 'What was that?!'
+                encounterMessageContent = 'That was close! It almost got you.'
                 setTimeout(returnToGameBoard, 3000);
                 break;
         }
@@ -165,8 +175,9 @@ class Game {
         this.gameMap.rooms[this.wumpus.currentLocation].hazards.push('wumpus');
         this.gameMap.rooms[this.pit.location].hazards.push('pit');
         this.gameMap.rooms[this.bat.location].hazards.push('bat');
-        $encounterMessage.show();
         this.getNearbyHazards();
+        $gameMessage.innerText = "Which room do you want to investigate?";
+        gameInterface.updateMap(0);
         gameInterface.printNewLocationInformation();
     }
 
@@ -238,12 +249,12 @@ class Game {
         this.player.currentLocation = this.player.startLocation;
         //this.player.arrowSupply = 5;
         this.getNearbyHazards();
-        $encounterMessage.innerText = "!!!";
-        $encounterMessage.show();
+        $gameMessage.innerText = "Which room do you want to investigate?";
+        gameInterface.updateMap(game.player.currentLocation);
         gameInterface.printNewLocationInformation();
         $encounterScreen.hide();
         $gameEndScreen.hide();
-        $gameBoardScreen.show();
+        $viewFinderContents.show();
     }
 
     endGame(gameOutcome) {
@@ -259,6 +270,8 @@ class Game {
                 $tryAgainBtn.show();
                 break;
         }
+        $directionBtns.prop('disabled', true);
+        $actionBtns.prop('disabled', true);
         $gameEndScreen.show()
     }
     //END of 'Game Methods'
@@ -435,18 +448,36 @@ $enterBtn.on('click', function() {
     game.startGame();
     $introductionScreen.hide();
     $headerNavigation.show();
+    $viewFinderContents.show();
     $gameBoardScreen.show();
+    $currentActionDisplay.innerText = 'MOVING';
+    $victoryImage.hide();
+    $defeatImage.hide();
+    $moveActionImage.show();
+    $directionBtns.prop('disabled', false);
+    $actionBtns.prop('disabled', false);
 })
 
 $newGameBtn.on('click', function() {
     game.startGame();
     $gameEndScreen.hide();
     $encounterScreen.hide();
-    $gameBoardScreen.show();
+    $viewFinderContents.show();
+    $currentActionDisplay.innerText = 'MOVING';
+    $victoryImage.hide();
+    $defeatImage.hide();
+    $moveActionImage.show();
+    $directionBtns.prop('disabled', false);
+    $actionBtns.prop('disabled', false);
 })
 
 $tryAgainBtn.on('click', function() {
     game.resetGame();
+    $defeatImage.hide();
+    $moveActionImage.show();
+    $currentActionDisplay.innerText = 'MOVING';
+    $directionBtns.prop('disabled', false);
+    $actionBtns.prop('disabled', false);
 })
 
 //---Handler for buttons that quit the game:
@@ -466,6 +497,7 @@ $quitBtn.on('click', function() {
 $directionBtns.on('click', function() {
     //By default, player action is set to "move"
     if (game.player.currentAction === 'move') {
+        gameInterface.updateMap(this.value);
         game.player.getNewPlayerLocation(this.value);
         game.getPresentHazards();
         game.getNearbyHazards();
